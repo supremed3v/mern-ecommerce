@@ -221,3 +221,31 @@ export const updatePassword = async (req, res, next) => {
   await user.save();
   sendToken(user, 200, res);
 };
+
+export const updateProfile = async (req, res, next) => {
+  const newUserData = {
+    name: req.body.name,
+    email: req.body.email,
+    address: req.body.address,
+    mobile: req.body.mobile,
+  };
+
+  // Update profilePicture: TODO
+
+  try {
+    const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    });
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
