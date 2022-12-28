@@ -5,6 +5,7 @@ import cloudinary from "cloudinary";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import connectDB from "./db.js";
+import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 
@@ -23,11 +24,7 @@ app.use(
 
 // Routes
 
-app.use("/api", (req, res) => {
-  res.send({
-    message: "API is working...",
-  });
-});
+app.use("/api/v1", userRoutes);
 
 // Connect to cloudinary
 cloudinary.config({
