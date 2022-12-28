@@ -17,7 +17,7 @@ export const registerUser = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user) {
-      return res.status(400).json({
+      return res.status(403).json({
         success: false,
         message: "User already exists",
       });
@@ -33,6 +33,39 @@ export const registerUser = async (req, res) => {
     sendToken(newUser, 200, res);
   } catch (error) {
     return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const loginUser = async (req, res, next) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({
+      success: false,
+      message: "Please enter all fields",
+    });
+  }
+  try {
+    const user = await User.findOne({ email }).select("+password");
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User does not exist",
+      });
+    }
+
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+        message: "Password is incorrect",
+      });
+    }
+    sendToken(user, 200, res);
+  } catch (error) {
+    res.status(500).json({
       success: false,
       message: error.message,
     });
