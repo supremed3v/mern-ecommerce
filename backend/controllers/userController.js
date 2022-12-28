@@ -191,3 +191,33 @@ export const resetPassword = async (req, res, next) => {
   //   });
   // }
 };
+
+export const getUserDetails = async (req, res, next) => {
+  const user = await User.findById(req.user.id).select("-password");
+  res.status(200).json({
+    success: true,
+    user,
+  });
+};
+
+export const updatePassword = async (req, res, next) => {
+  const user = await User.findById(req.user.id).select("+password");
+  const isMatch = await user.comparePassword(req.body.currentPassword);
+  if (!isMatch) {
+    return res.status(400).json({
+      success: false,
+      message: "Old password is incorrect",
+    });
+  }
+
+  if (req.body.newPassword !== req.body.confirmPassword) {
+    return res.status(400).json({
+      success: false,
+      message: "Password does not match",
+    });
+  }
+
+  user.password = req.body.newPassword;
+  await user.save();
+  sendToken(user, 200, res);
+};
