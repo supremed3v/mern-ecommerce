@@ -1,5 +1,6 @@
 import User from "../models/User.Model.js";
 import { sendToken } from "../middlewares/jwtToken.js";
+import sendEmail from "../middlewares/sendEmail.js";
 
 export const registerUser = async (req, res) => {
   try {
@@ -81,4 +82,52 @@ export const logoutUser = async (req, res, next) => {
     success: true,
     message: "Come back soon!",
   });
+};
+
+export const forgotPassword = async (req, res, next) => {
+  const user = await User.findOne({
+    email: req.body.email,
+  });
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+  const resetToken = user.getResetPasswordToken();
+
+  await user.save({ validateBeforeSave: false });
+
+  // Create reset password url
+  const resetUrl = `${req.protocol}://${req.get(
+    "host"
+  )}/api/v1/password/reset/${resetToken}`;
+
+  const message = `Your password reset token is as follow:
+
+  \n\n${resetUrl}
+
+  \n\nIf you have not requested this email, then ignore it.`;
+
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: "Password Recovery",
+      message,
+    });
+    res.status(200).json({
+      success: true,
+      message: `Email sent to: ${user.email}`,
+    });
+  } catch (error) {
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save({ validateBeforeSave: false });
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };

@@ -42,7 +42,7 @@ describe("API TEST", () => {
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body).to.be.a("object");
-        expect(res.body).to.have.property("success");
+        expect(res.body).to.have.property("success").equal(true);
         expect(res.body).to.have.property("newUser");
         expect(res.body).to.have.property("token");
         done();
@@ -72,7 +72,7 @@ describe("API TEST", () => {
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body).to.be.a("object");
-        expect(res.body).to.have.property("success");
+        expect(res.body).to.have.property("success").equal(true);
         expect(res.body)
           .to.have.property("message")
           .equal(`Email sent to: ${email}`);
