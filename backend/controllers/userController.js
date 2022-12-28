@@ -23,7 +23,7 @@ export const registerUser = async (req, res) => {
       });
     }
 
-    const newUser = new User({
+    const newUser = await User.create({
       name,
       email,
       password,
