@@ -1,6 +1,7 @@
 import User from "../models/User.Model.js";
 import { sendToken } from "../middlewares/jwtToken.js";
 import sendEmail from "../middlewares/sendEmail.js";
+import crypto from "crypto";
 
 export const registerUser = async (req, res) => {
   try {
@@ -130,4 +131,63 @@ export const forgotPassword = async (req, res, next) => {
       message: error.message,
     });
   }
+};
+
+export const resetPassword = async (req, res, next) => {
+  // Hash URL token
+  const resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(req.params.resetToken)
+    .digest("hex");
+
+  const user = await User.findOne({
+    resetPasswordToken,
+    resetPasswordExpire: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return res.status(400).json({
+      success: false,
+      message: "Password reset token is invalid or has expired",
+    });
+  }
+
+  if (req.body.password !== req.body.confirmPassword) {
+    return res.status(400).json({
+      success: false,
+      message: "Password does not match",
+    });
+  }
+
+  // Set new password
+  user.password = req.body.password;
+
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
+
+  await user.save();
+
+  sendToken(user, 200, res);
+
+  res.status(200).json({
+    success: true,
+    message: "Password updated successfully",
+  });
+
+  // try {
+  //   await sendEmail({
+  //     email: user.email,
+  //     subject: "Your password has been changed",
+  //     message: "This is a confirmation that the password for your account has just been changed.",
+  //   });
+  //   res.status(200).json({
+  //     success: true,
+  //     message: "Password updated successfully",
+  //   });
+  // } catch (error) {
+  //   return res.status(500).json({
+  //     success: false,
+  //     message: error.message,
+  //   });
+  // }
 };
