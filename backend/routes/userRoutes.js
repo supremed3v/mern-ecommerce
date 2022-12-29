@@ -1,9 +1,9 @@
 import express from "express";
 
 import {
+  allUsers,
   deleteUser,
   forgotPassword,
-  getAllUsers,
   getSingerUserDetails,
   getUserDetails,
   loginUser,
@@ -26,7 +26,7 @@ router.put("/me/update", authJwt, updateProfile);
 router.post("/password/forgot", forgotPassword);
 router.put("/password/reset/:token", resetPassword);
 router.put("/password/update", authJwt, updatePassword);
-router.get("/admin/users", authJwt, authRole("admin"), getAllUsers);
+router.get("/admin/users", authJwt, authRole("admin"), allUsers);
 router.get(
   "/admin/users/:id",
   authRole("admin"),
