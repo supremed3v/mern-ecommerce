@@ -1,7 +1,10 @@
 import express from "express";
 
 import {
+  deleteUser,
   forgotPassword,
+  getAllUsers,
+  getSingerUserDetails,
   getUserDetails,
   loginUser,
   logoutUser,
@@ -9,8 +12,9 @@ import {
   resetPassword,
   updatePassword,
   updateProfile,
+  updateUserRole,
 } from "../controllers/userController.js";
-import { authJwt } from "../middlewares/authJwt.js";
+import { authJwt, authRole } from "../middlewares/authJwt.js";
 
 const router = express.Router();
 
@@ -22,5 +26,14 @@ router.put("/me/update", authJwt, updateProfile);
 router.post("/password/forgot", forgotPassword);
 router.put("/password/reset/:token", resetPassword);
 router.put("/password/update", authJwt, updatePassword);
+router.get("/admin/users", authJwt, authRole("admin"), getAllUsers);
+router.get(
+  "/admin/users/:id",
+  authRole("admin"),
+  authJwt,
+  getSingerUserDetails
+);
+router.delete("/admin/users/:id", authRole("admin"), authJwt, deleteUser);
+router.put("/admin/users/:id", authRole("admin"), authJwt, updateUserRole);
 
 export default router;

@@ -192,7 +192,7 @@ export const resetPassword = async (req, res, next) => {
   // }
 };
 
-export const getUserDetails = async (req, res, next) => {
+export const getAllUsers = async (req, res, next) => {
   const user = await User.findById(req.user.id).select("-password");
   res.status(200).json({
     success: true,
@@ -246,6 +246,81 @@ export const updateProfile = async (req, res, next) => {
     res.status(500).json({
       success: false,
       message: error.message,
+    });
+  }
+};
+
+// Admin Routes
+
+export const allUsers = async (req, res, next) => {
+  const users = await User.find();
+  res.status(200).json({
+    success: true,
+    users,
+  });
+};
+
+export const getSingerUserDetails = async (req, res, next) => {
+  const user = await User.findById(req.params.id).select("-password");
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+  res.status(200).json({
+    success: true,
+    user,
+  });
+};
+
+export const updateUserRole = async (req, res, next) => {
+  const newUserData = {
+    role: req.body.role,
+  };
+  try {
+    const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
+      new: true,
+      runValidator: true,
+      useFindAndModify: false,
+    });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+    await User.findByIdAndUpdate(req.params);
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+export const deleteUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+    await user.remove();
+    res.status(200).json({
+      success: true,
+      message: "User is deleted",
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
     });
   }
 };
