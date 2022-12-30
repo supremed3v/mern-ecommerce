@@ -2,7 +2,7 @@ import express from "express";
 import {
   createProduct,
   deleteProductReview,
-  deletProduct,
+  deleteProduct,
   getAdminProducts,
   getAllProducts,
   getProductDetails,
@@ -20,7 +20,7 @@ router.get("/admin/products", authJwt, authRole("admin"), getAdminProducts);
 router.post("/admin/product/new", authJwt, authRole("admin"), createProduct);
 
 router.put("/admin/product/:id", authJwt, authRole("admin"), updateProduct);
-router.delete("/admin/product/:id", authJwt, authRole("admin"), deletProduct);
+router.delete("/admin/product/:id", authJwt, authRole("admin"), deleteProduct);
 
 router.get("/product/:id", getProductDetails);
 
