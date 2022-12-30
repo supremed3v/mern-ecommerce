@@ -8,10 +8,10 @@ import { ContextProvider } from "./contexts/ContextProvider";
 import { AuthProvider } from "./contexts/AuthContext";
 
 ReactDOM.render(
-  <AuthProvider>
-    <ContextProvider>
+  <ContextProvider>
+    <AuthProvider>
       <App />
-    </ContextProvider>
-  </AuthProvider>,
+    </AuthProvider>
+  </ContextProvider>,
   document.getElementById("root")
 );
