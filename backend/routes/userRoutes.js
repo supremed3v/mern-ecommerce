@@ -29,11 +29,12 @@ router.put("/password/update", authJwt, updatePassword);
 router.get("/admin/users", authJwt, authRole("admin"), allUsers);
 router.get(
   "/admin/users/:id",
-  authRole("admin"),
+
   authJwt,
+  authRole("admin"),
   getSingerUserDetails
 );
-router.delete("/admin/users/:id", authRole("admin"), authJwt, deleteUser);
-router.put("/admin/users/:id", authRole("admin"), authJwt, updateUserRole);
+router.delete("/admin/users/:id", authJwt, authRole("admin"), deleteUser);
+router.put("/admin/users/:id", authJwt, authRole("admin"), updateUserRole);
 
 export default router;

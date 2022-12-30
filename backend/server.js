@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import connectDB from "./db.js";
 import userRoutes from "./routes/userRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use(
 // Routes
 
 app.use("/api/v1", userRoutes);
+app.use("/api/v1", productRoutes);
 
 // Connect to cloudinary
 cloudinary.config({
@@ -35,13 +37,19 @@ cloudinary.config({
 
 const PORT = process.env.PORT;
 
+process.on("uncaughtException", (err) => {
+  console.log(`Error: ${err.message}`);
+  console.log(`Shutting down the server due to Uncaught Exception`);
+  process.exit(1);
+});
+
 const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
 // Handle unhandled promise rejections
 
-process.on("unhandledRejection", (err, promise) => {
+process.on("unhandledRejection", (err) => {
   console.log(`Logged Error: ${err}`);
   server.close(() => process.exit(1));
 });

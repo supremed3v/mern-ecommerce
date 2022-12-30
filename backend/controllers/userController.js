@@ -16,23 +16,23 @@ export const registerUser = async (req, res) => {
     }
 
     // Check for existing user
-    const user = await User.findOne({ email });
+    const valUser = await User.findOne({ email });
 
-    if (user) {
+    if (valUser) {
       return res.status(403).json({
         success: false,
         message: "User already exists",
       });
     }
 
-    const newUser = await User.create({
+    const user = await User.create({
       name,
       email,
       password,
       address,
       mobile,
     });
-    sendToken(newUser, 200, res);
+    sendToken(user, 200, res);
   } catch (error) {
     return res.status(500).json({
       success: false,
