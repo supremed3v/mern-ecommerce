@@ -16,56 +16,49 @@ export const AuthProvider = ({ children }) => {
   // Login
 
   const loadUser = async () => {
-    if (localStorage.getItem("token")) {
-      const token = localStorage.getItem("token");
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      if (token) {
-        config.headers["Authorization"] = `Bearer ${token}`;
-      }
-      try {
-        const response = await axios.get("/api/auth/me", config);
-        if (response.data.success) {
-          setAuthState({
-            ...authState,
-            isAuthenticated: true,
-            user: response.data.user,
-            loading: false,
-          });
-        }
-      } catch (error) {
-        localStorage.removeItem("accessToken");
+    try {
+      const response = await axios.get("http://localhost:3333/api/v1/me");
+      if (response.data.success) {
         setAuthState({
           ...authState,
-          isAuthenticated: false,
-          user: null,
+          isAuthenticated: true,
+          user: response.data.user,
+          loading: false,
+        });
+        setAuthState({
+          ...authState,
           loading: false,
         });
       }
-    } else {
-      setAuthState({
-        ...authState,
-        loading: false,
-      });
+    } catch (error) {
+      console.log(error.response.data.message);
     }
   };
 
-  const loginUser = async (userForm) => {
+  const loginUser = async (email, password) => {
+    setAuthState({
+      ...authState,
+      loading: true,
+    });
     try {
-      const response = await axios.post("/api/v1/login", userForm);
+      const response = await axios.post("http://localhost:3333/api/v1/login", {
+        email,
+        password,
+      });
       if (response.data.success) {
-        localStorage.setItem("token", response.data.token);
-        await loadUser();
+        setAuthState({
+          ...authState,
+          isAuthenticated: true,
+          user: response.data.user,
+          loading: false,
+        });
       }
       return response.data;
     } catch (error) {
-      if (error.response.data) {
-        return error.response.data;
+      if (error.response.message) {
+        return error.response.message;
       } else {
-        return { success: false, message: error.message };
+        return { success: false, message: error.response.message };
       }
     }
   };
@@ -191,3 +184,5 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+export const useAuthContext = () => useContext(AuthContext);
