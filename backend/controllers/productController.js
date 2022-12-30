@@ -165,6 +165,12 @@ export const createProductReview = async (req, res, next) => {
   };
 
   const product = await Product.findById(productId);
+  if (!product) {
+    return res.status(404).json({
+      success: false,
+      message: "Product not found",
+    });
+  }
 
   // Check if the user has already reviewed the product
   const isReviewed = product.reviews.find(

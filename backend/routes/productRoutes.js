@@ -8,6 +8,7 @@ import {
   getProductDetails,
   getProductReviews,
   updateProduct,
+  createProductReview,
 } from "../controllers/productController.js";
 import { authJwt, authRole } from "../middlewares/authJwt.js";
 
@@ -18,6 +19,7 @@ router.get("/products", getAllProducts);
 router.get("/admin/products", authJwt, authRole("admin"), getAdminProducts);
 
 router.post("/admin/product/new", authJwt, authRole("admin"), createProduct);
+router.put("/review", authJwt, createProductReview);
 
 router.put("/admin/product/:id", authJwt, authRole("admin"), updateProduct);
 router.delete("/admin/product/:id", authJwt, authRole("admin"), deleteProduct);
