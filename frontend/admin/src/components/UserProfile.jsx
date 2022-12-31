@@ -6,7 +6,6 @@ import { userProfileData } from "../data/dummy";
 import { useStateContext } from "../contexts/ContextProvider";
 import avatar from "../data/avatar2.jpg";
 import { useAuthContext } from "../contexts/AuthContext";
-import { Navigate } from "react-router-dom";
 
 const UserProfile = () => {
   const { currentColor } = useStateContext();

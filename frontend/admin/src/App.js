@@ -16,7 +16,7 @@ import Home from "./Home";
 
 const App = () => {
   const { currentMode } = useStateContext();
-  const { authState, loginUser } = useAuthContext();
+  const { authState } = useAuthContext();
 
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>

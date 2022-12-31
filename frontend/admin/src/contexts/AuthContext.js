@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
       loading: true,
     });
     try {
-      const response = await axios.post("http://localhost:3333/api/v1/login", {
+      const response = await axios.post("/api/v1/login", {
         email,
         password,
       });
@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }) => {
       isAuthenticated: false,
       user: null,
     });
-    await axios.get("http://localhost:3333/api/v1/logout");
+    await axios.get("/api/v1/logout");
   };
 
   // Register
