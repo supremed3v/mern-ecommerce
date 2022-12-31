@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import connectDB from "./db.js";
 import userRoutes from "./routes/userRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
+import bodyParser from "body-parser";
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(cors());
 app.use(
   fileUpload({
