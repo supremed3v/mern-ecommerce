@@ -11,14 +11,14 @@ const Login = () => {
     email: "",
     password: "",
   });
-  const { loginUser, isAuthenticated, error } = useAuthContext();
+  const { loginUser, isAuthenticated, error, user } = useAuthContext();
 
   const handleSignUp = async () => {};
   const handleLogin = () => {
     try {
       loginUser(formData.email, formData.password);
-      if (isAuthenticated === true) {
-        navigate("/", { replace: true });
+      if (isAuthenticated === true && user.role === "admin") {
+        navigate("/dashboard", { replace: true });
       }
     } catch (err) {
       if (error) {

@@ -55,10 +55,15 @@ export const AuthProvider = ({ children }) => {
       }
       return response.data;
     } catch (error) {
-      if (error.response.message) {
-        return error.response.message;
+      if (error.response.data) {
+        setAuthState({
+          ...authState,
+          loading: false,
+          error: error.response.data.message,
+        });
+        return error.response.data;
       } else {
-        return { success: false, message: error.response.message };
+        return { success: false, message: error.message };
       }
     }
   };
@@ -66,13 +71,12 @@ export const AuthProvider = ({ children }) => {
   // Logout
 
   const logoutUser = async () => {
-    localStorage.removeItem("token");
     setAuthState({
       ...authState,
       isAuthenticated: false,
       user: null,
     });
-    await axios.get("/api/v1/logout");
+    await axios.get("http://localhost:3333/api/v1/logout");
   };
 
   // Register

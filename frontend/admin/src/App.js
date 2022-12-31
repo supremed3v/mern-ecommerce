@@ -1,5 +1,11 @@
 import React, { useContext } from "react";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useNavigate,
+  Navigate,
+} from "react-router-dom";
 
 import { Login } from "./pages";
 import "./App.css";
@@ -16,10 +22,10 @@ const App = () => {
     <div className={currentMode === "Dark" ? "dark" : ""}>
       <BrowserRouter>
         <Routes>
-          {authState.isAuthenticated ? (
-            <Route path="/" element={<Home />} />
+          {authState.isAuthenticated && authState.user.role === "admin" ? (
+            <Route exact path="*" element={<Home />} />
           ) : (
-            <Route path="/" element={<Login />} />
+            <Route path="*" element={<Login />} />
           )}
         </Routes>
       </BrowserRouter>

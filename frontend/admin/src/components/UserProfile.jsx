@@ -5,9 +5,16 @@ import { Button } from ".";
 import { userProfileData } from "../data/dummy";
 import { useStateContext } from "../contexts/ContextProvider";
 import avatar from "../data/avatar2.jpg";
+import { useAuthContext } from "../contexts/AuthContext";
+import { Navigate } from "react-router-dom";
 
 const UserProfile = () => {
   const { currentColor } = useStateContext();
+  const { logoutUser, authState } = useAuthContext();
+
+  const handleLogout = () => {
+    logoutUser();
+  };
 
   return (
     <div className="nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96">
@@ -30,15 +37,15 @@ const UserProfile = () => {
         <div>
           <p className="font-semibold text-xl dark:text-gray-200">
             {" "}
-            Amanda John{" "}
+            {authState.user.name}{" "}
           </p>
           <p className="text-gray-500 text-sm dark:text-gray-400">
             {" "}
-            Administrator{" "}
+            {authState.user.role}{" "}
           </p>
           <p className="text-gray-500 text-sm font-semibold dark:text-gray-400">
             {" "}
-            info@shop.com{" "}
+            {authState.user.email}{" "}
           </p>
         </div>
       </div>
@@ -67,13 +74,25 @@ const UserProfile = () => {
         ))}
       </div>
       <div className="mt-5">
-        <Button
+        {/* <Button
           color="white"
           bgColor={currentColor}
           text="Logout"
           borderRadius="10px"
           width="full"
-        />
+        /> */}
+        <button
+          type="button"
+          style={{
+            backgroundColor: currentColor,
+            color: "white",
+            borderRadius: 10,
+          }}
+          className={`p-3 w-full hover:drop-shadow-xl`}
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
       </div>
     </div>
   );
