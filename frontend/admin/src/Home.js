@@ -26,7 +26,6 @@ import "./App.css";
 
 import { useStateContext } from "./contexts/ContextProvider";
 import ProductsList from "./pages/ProductsList";
-import Cookies from "js-cookie";
 
 const Home = () => {
   const {
@@ -36,8 +35,6 @@ const Home = () => {
     currentMode,
     currentColor,
   } = useStateContext();
-  const cookie = Cookies.get("token");
-  console.log("cookie", cookie);
   return (
     <div className="flex relative dark:bg-main-dark-bg">
       <div className="fixed right-4 bottom-4" style={{ zIndex: "1000" }}>

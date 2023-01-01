@@ -55,6 +55,23 @@ export const gridOrderImage = (props) => (
   </div>
 );
 
+export const gridProductImage = (props) => (
+  <div>
+    <img
+      className="rounded-xl h-20 md:ml-3"
+      src={props.images.url}
+      alt="product"
+    />
+  </div>
+);
+
+export const gridProductRating = (props) => (
+  <div className="flex items-center gap-1">
+    <span className="text-sm text-gray-400">{props.ratings}</span>
+    <FiStar className="text-yellow-400" />
+  </div>
+);
+
 export const gridOrderStatus = (props) => (
   <button
     type="button"
@@ -944,6 +961,65 @@ export const ordersGrid = [
   {
     field: "Location",
     headerText: "Location",
+    width: "150",
+    textAlign: "Center",
+  },
+];
+
+export const productsGrid = [
+  {
+    headerText: "Image",
+    template: gridProductImage,
+    textAlign: "Center",
+    width: "120",
+  },
+  {
+    field: "name",
+    headerText: "Product Name",
+    width: "150",
+  },
+  {
+    field: "category",
+    headerText: "Category",
+    width: "150",
+    editType: "dropdownedit",
+  },
+  {
+    field: "price",
+    headerText: "Price",
+    format: "C2",
+    textAlign: "Center",
+    editType: "numericedit",
+    width: "150",
+  },
+  {
+    headerText: "ratings",
+    template: gridProductRating,
+    field: "ProductRating",
+    textAlign: "Center",
+    width: "120",
+  },
+  {
+    field: "_id",
+    headerText: "Product ID",
+    width: "120",
+    textAlign: "Center",
+  },
+  {
+    field: "stock",
+    headerText: "Stock",
+    width: "150",
+    textAlign: "Center",
+  },
+  {
+    field: "numOfReviews",
+    headerText: "Reviews Count",
+    width: "150",
+    textAlign: "Center",
+  },
+  {
+    field: "user",
+    headerText: "Created By",
     width: "150",
     textAlign: "Center",
   },

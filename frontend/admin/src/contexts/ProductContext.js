@@ -7,7 +7,7 @@ const ProductContext = createContext();
 const initialState = {
   products: [],
   adminProducts: [],
-  loading: false,
+  loading: true,
   error: null,
 };
 
