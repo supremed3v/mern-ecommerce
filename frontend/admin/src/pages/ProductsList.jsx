@@ -23,6 +23,16 @@ import { HiLockClosed } from "react-icons/hi";
 import { ThreeDots } from "react-loader-spinner";
 
 const ProductsList = () => {
+  const categories = [
+    "Laptop",
+    "Footwear",
+    "Bottom",
+    "Tops",
+    "Attire",
+    "Camera",
+    "SmartPhones",
+  ];
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -89,6 +99,20 @@ const ProductsList = () => {
     }
   };
 
+  const createProduct = () => {
+    console.log(formData);
+    setIsModalOpen(false);
+    setFormData({
+      name: "",
+      price: 0,
+      description: "",
+      category: "",
+      images: [],
+      stock: 1,
+    });
+    setImagesPreview([]);
+  };
+
   return (
     <div className="m-2 md:m-10 p2 md:p-10 bg-white rounded-3xl">
       <Header title="Products" category="Page" />
@@ -127,7 +151,7 @@ const ProductsList = () => {
                     type="text"
                     required
                     className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                    placeholder="Email address"
+                    placeholder="Enter Product Name"
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
                     }
@@ -144,7 +168,7 @@ const ProductsList = () => {
                     type="text"
                     required
                     className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                    placeholder="Password"
+                    placeholder="Enter Description"
                     onChange={(e) =>
                       setFormData({ ...formData, description: e.target.value })
                     }
@@ -162,7 +186,6 @@ const ProductsList = () => {
                       type="number"
                       required
                       className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                      placeholder="Password"
                       onChange={(e) =>
                         setFormData({ ...formData, price: e.target.value })
                       }
@@ -179,13 +202,35 @@ const ProductsList = () => {
                       type="number"
                       required
                       className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                      placeholder="Password"
                       onChange={(e) =>
                         setFormData({ ...formData, stock: e.target.value })
                       }
                       value={formData.stock}
                     />
                   </div>
+                </div>
+                <div>
+                  <label htmlFor="category" className="text-gray-800">
+                    Category
+                  </label>
+                  <select
+                    id="category"
+                    name="category"
+                    onChange={(e) =>
+                      setFormData({ ...formData, category: e.target.value })
+                    }
+                    value={formData.category}
+                    className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                  >
+                    <option value="" disabled>
+                      Select Category
+                    </option>
+                    {categories.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div>
                   <label htmlFor="images" className="text-gray-800">
@@ -224,8 +269,11 @@ const ProductsList = () => {
                     formData.name === "" ||
                     formData.description === "" ||
                     formData.price === 0 ||
-                    formData.stock < 0
+                    formData.stock < 0 ||
+                    imagesPreview.length === 0 ||
+                    formData.category === ""
                   }
+                  onClick={createProduct}
                 >
                   <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                     <HiLockClosed
