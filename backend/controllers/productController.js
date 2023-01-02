@@ -97,7 +97,7 @@ export const updateProduct = async (req, res, next) => {
     images = req.body.images;
   }
 
-  if (images !== undefined) {
+  if (images !== null && images !== undefined && images !== "") {
     // Delete Images associated with the product
 
     for (let i = 0; i < product.images.length; i++) {

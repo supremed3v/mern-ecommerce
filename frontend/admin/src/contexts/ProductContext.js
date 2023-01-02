@@ -72,14 +72,22 @@ export const ProductProvider = ({ children }) => {
   };
 
   const updateProduct = async (id, productData) => {
+    setProductState({
+      ...productState,
+      loading: true,
+    });
     try {
       const response = await axios.put(
-        `http://localhost:3333/api/v1/admin/product/${id}`,
+        `/api/v1/admin/product/${id}`,
         productData
       );
       if (response.data.success) {
+        setProductState({
+          ...productState,
+          loading: false,
+        });
         getAdminProducts(); // update the products
-        getProducts(); // update the products
+        // getProducts(); // update the products
       }
     } catch (error) {
       console.log(error.response.data.message);

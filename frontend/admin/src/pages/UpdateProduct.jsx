@@ -7,7 +7,8 @@ import { useProductContext } from "../contexts/ProductContext";
 const UpdateProduct = () => {
   const { id } = useParams();
   const productId = id;
-  const { productState, getProductDetails } = useProductContext();
+  const { productState, getProductDetails, updateProduct } =
+    useProductContext();
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
@@ -54,7 +55,7 @@ const UpdateProduct = () => {
     images.forEach((image) => {
       formData.append("images", image);
     });
-    // updateProduct(productId, formData)
+    updateProduct(productId, formData);
   };
 
   const changeHandler = (e) => {
