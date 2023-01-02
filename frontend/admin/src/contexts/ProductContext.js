@@ -9,6 +9,7 @@ const initialState = {
   adminProducts: [],
   loading: false,
   error: null,
+  productDetails: {},
 };
 
 export const ProductProvider = ({ children }) => {
@@ -48,13 +49,21 @@ export const ProductProvider = ({ children }) => {
 
   const createProduct = async (productData) => {
     try {
+      setProductState({
+        ...productState,
+        loading: true,
+      });
       const response = await axios.post(
-        "http://localhost:3333/api/v1/admin/product/new",
+        "/api/v1/admin/product/new",
         productData
       );
       if (response.data.success) {
+        setProductState({
+          ...productState,
+          loading: false,
+        });
         getAdminProducts(); // update the products
-        getProducts(); // update the products
+        // getProducts(); // update the products
       }
     } catch (error) {
       console.log(error.response.data.message);
@@ -93,12 +102,18 @@ export const ProductProvider = ({ children }) => {
     }
   };
   const getProductDetails = async (id) => {
+    setProductState({
+      ...productState,
+      loading: true,
+    });
     try {
-      const response = await axios.get(
-        `http://localhost:3333/api/v1/product/${id}`
-      );
+      const response = await axios.get(`/api/v1/product/${id}`);
       if (response.data.success) {
-        return response.data.product;
+        setProductState({
+          ...productState,
+          productDetails: response.data.product,
+          loading: false,
+        });
       }
     } catch (error) {
       console.log(error.response.data.message);

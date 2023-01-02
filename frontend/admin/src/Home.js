@@ -26,6 +26,7 @@ import "./App.css";
 
 import { useStateContext } from "./contexts/ContextProvider";
 import ProductsList from "./pages/ProductsList";
+import UpdateProduct from "./pages/UpdateProduct";
 
 const Home = () => {
   const {
@@ -77,6 +78,7 @@ const Home = () => {
             <Route path="/employees" element={<Employees />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/products" element={<ProductsList />} />
+            <Route path="/product/:id" element={<UpdateProduct />} />
 
             {/* Apps */}
 

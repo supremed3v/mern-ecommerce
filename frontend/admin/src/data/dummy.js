@@ -59,7 +59,7 @@ export const gridProductImage = (props) => (
   <div>
     <img
       className="rounded-xl h-20 md:ml-3"
-      src={props.images.url}
+      src={props.images[0].url}
       alt="product"
     />
   </div>
