@@ -29,9 +29,6 @@ app.use(
 
 app.use("/api/v1", userRoutes);
 app.use("/api/v1", productRoutes);
-app.use("/", (req, res) => {
-  res.send(200).json({ message: "Welcome to the API" });
-});
 
 // Connect to cloudinary
 cloudinary.config({
