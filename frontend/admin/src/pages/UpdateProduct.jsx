@@ -185,6 +185,37 @@ const UpdateProduct = () => {
                   ))}
                 </div>
 
+                {/* Product Reviews */}
+
+                <div className="mt-5">
+                  <h3 className="text-xl font-medium">Reviews:</h3>
+                  <hr />
+                  {productState.productDetails &&
+                  !productState.productDetails.reviews ? (
+                    <p>No Reviews</p>
+                  ) : (
+                    productState.productDetails.reviews.map((review) => {
+                      return (
+                        <div key={review._id} className="flex flex-col mt-2">
+                          <strong>
+                            {review.name} (id: {review.user})
+                          </strong>
+                          <p>Comment: {review.comment}</p>
+                          <p>Rating: {review.rating}</p>
+                          <br />
+                          {/** Delete Review */}
+                          <button
+                            type="button"
+                            className="group relative flex justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 mb-4"
+                          >
+                            Delete Review
+                          </button>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+
                 <button
                   type="submit"
                   className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
