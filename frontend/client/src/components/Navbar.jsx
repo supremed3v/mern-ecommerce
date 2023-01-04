@@ -12,8 +12,27 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import { Link, NavLink } from "react-router-dom";
 
-const pages = ["Home", "Products", "About", "Contact"];
+// const pages = ["Home", "Products", "About", "Contact"];
+const pages = [
+  {
+    name: "Home",
+    link: "/",
+  },
+  {
+    name: "Products",
+    link: "/products",
+  },
+  {
+    name: "About",
+    link: "/about",
+  },
+  {
+    name: "Contact",
+    link: "/contact",
+  },
+];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Navbar() {
@@ -35,8 +54,13 @@ function Navbar() {
     setAnchorElUser(null);
   };
 
+  let activeStyle = {
+    textDecoration: "underline",
+    color: "white",
+  };
+
   return (
-    <AppBar position="static" sx={{ bgcolor: "darkblue" }}>
+    <AppBar position="sticky" sx={{ bgcolor: "darkblue" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -88,8 +112,12 @@ function Navbar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem
+                  key={page.name}
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  <Link to={page.link}>{page.name}</Link>
                 </MenuItem>
               ))}
             </Menu>
@@ -116,11 +144,24 @@ function Navbar() {
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
-                key={page}
+                key={page.name}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {page}
+                <NavLink
+                  to={page.link}
+                  style={({ isActive }) =>
+                    isActive
+                      ? activeStyle
+                      : {
+                          color: "white",
+                          textDecoration: "none",
+                          fontWeight: "bold",
+                        }
+                  }
+                >
+                  {page.name}
+                </NavLink>
               </Button>
             ))}
           </Box>
