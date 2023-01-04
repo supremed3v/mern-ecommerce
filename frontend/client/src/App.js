@@ -1,21 +1,24 @@
-import { useEffect } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
-import { useProductContext } from "./context/ProductContext";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
+import ProductDetails from "./pages/ProductDetails";
+import { Helmet } from "react-helmet";
 function App() {
-  const { getProducts, state } = useProductContext();
   return (
     <BrowserRouter>
       <div className="App">
+        <Helmet>
+          <title>MERN - Store</title>
+          <meta name="description" content="MERN - Store" />
+        </Helmet>
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
-          {/* <Route path="/products/:id" element={<ProductDetails/>} />
-          <Route path="/cart" element={<Cart/>} />
+          <Route path="/product/:id" element={<ProductDetails />} />
+          {/*<Route path="/cart" element={<Cart/>} />
           <Route path="/wishlist" element={<Wishlist/>} />
           <Route path="/login" element={<Login/>} />
           <Route path="/signup" element={<Signup/>} />

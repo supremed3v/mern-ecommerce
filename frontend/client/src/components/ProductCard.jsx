@@ -10,7 +10,13 @@ import {
   Rating,
 } from "@mui/material";
 
+import { useNavigate } from "react-router-dom";
+
 const ProductCard = () => {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/product/1");
+  };
   return (
     <div>
       {/* Create Product Card in grid */}
@@ -23,7 +29,7 @@ const ProductCard = () => {
           mx: 2,
         }}
       >
-        <Card sx={{ maxWidth: 345 }}>
+        <Card sx={{ maxWidth: 345 }} onClick={handleClick}>
           <CardActionArea>
             <CardMedia
               component="img"
@@ -39,7 +45,7 @@ const ProductCard = () => {
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
                 Quisquam, quod.
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="h6" color="text.secondary">
                 $100
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -51,7 +57,21 @@ const ProductCard = () => {
               <Rating name="read-only" value={4} readOnly />
             </CardContent>
           </CardActionArea>
-          <Button size="small" color="primary">
+          <Button
+            size="small"
+            color="primary"
+            variant="contained"
+            sx={{
+              backgroundColor: "#f50057",
+              color: "#fff",
+              "&:hover": {
+                backgroundColor: "#f50057",
+                color: "#fff",
+              },
+              mb: 2,
+              mx: 2,
+            }}
+          >
             Add to Cart
           </Button>
         </Card>
@@ -71,7 +91,7 @@ const ProductCard = () => {
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
                 Quisquam, quod.
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="h6" color="text.secondary">
                 $100
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -83,7 +103,21 @@ const ProductCard = () => {
               <Rating name="read-only" value={4} readOnly />
             </CardContent>
           </CardActionArea>
-          <Button size="small" color="primary">
+          <Button
+            size="small"
+            color="primary"
+            variant="contained"
+            sx={{
+              backgroundColor: "#f50057",
+              color: "#fff",
+              "&:hover": {
+                backgroundColor: "#f50057",
+                color: "#fff",
+              },
+              mb: 2,
+              mx: 2,
+            }}
+          >
             Add to Cart
           </Button>
         </Card>
@@ -103,7 +137,7 @@ const ProductCard = () => {
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
                 Quisquam, quod.
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="h6" color="text.secondary">
                 $100
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -115,7 +149,21 @@ const ProductCard = () => {
               <Rating name="read-only" value={4} readOnly />
             </CardContent>
           </CardActionArea>
-          <Button size="small" color="primary">
+          <Button
+            size="small"
+            color="primary"
+            variant="contained"
+            sx={{
+              backgroundColor: "#f50057",
+              color: "#fff",
+              "&:hover": {
+                backgroundColor: "#f50057",
+                color: "#fff",
+              },
+              mb: 2,
+              mx: 2,
+            }}
+          >
             Add to Cart
           </Button>
         </Card>
@@ -135,7 +183,7 @@ const ProductCard = () => {
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
                 Quisquam, quod.
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="h6" color="text.secondary">
                 $100
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -147,7 +195,21 @@ const ProductCard = () => {
               <Rating name="read-only" value={4} readOnly />
             </CardContent>
           </CardActionArea>
-          <Button size="small" color="primary">
+          <Button
+            size="small"
+            color="primary"
+            variant="contained"
+            sx={{
+              backgroundColor: "#f50057",
+              color: "#fff",
+              "&:hover": {
+                backgroundColor: "#f50057",
+                color: "#fff",
+              },
+              mb: 2,
+              mx: 2,
+            }}
+          >
             Add to Cart
           </Button>
         </Card>
