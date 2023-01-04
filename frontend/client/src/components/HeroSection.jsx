@@ -1,7 +1,9 @@
 import React from "react";
 import { Box, Button, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
   const decorative = "Welcome to";
   const title = "MERN Store";
   const subtitle =
@@ -71,6 +73,7 @@ const HeroSection = () => {
             textTransform: "uppercase",
             letterSpacing: 0.5,
           }}
+          onClick={() => navigate("/products")}
         >
           Shop Now
         </Typography>

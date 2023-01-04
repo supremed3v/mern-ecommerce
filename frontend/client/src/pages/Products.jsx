@@ -80,7 +80,7 @@ const Products = () => {
               }}
             >
               <Box sx={{ width: 150 }}>
-                <Typography id="range-slider" gutterBottom>
+                <Typography id="range-slider" gutterBottom variant="h6">
                   Price Range
                 </Typography>
                 <Slider
@@ -94,7 +94,7 @@ const Products = () => {
                 />
               </Box>
               <Box sx={{ width: 150 }}>
-                <Typography id="range-slider" gutterBottom>
+                <Typography id="range-slider" gutterBottom variant="h6">
                   Categories
                 </Typography>
                 <div>
@@ -139,7 +139,7 @@ const Products = () => {
                 </div>
               </Box>
               <Box sx={{ width: 150 }}>
-                <Typography id="range-slider" gutterBottom>
+                <Typography id="range-slider" gutterBottom variant="h6">
                   Rating
                 </Typography>
                 <div>
