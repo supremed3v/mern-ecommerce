@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Slider, Typography, Box, Button, Grid } from "@mui/material";
+import { useProductContext } from "../context/ProductContext";
+import ProductCard from "../components/ProductCard";
 
 const Products = () => {
   const categories = [
@@ -16,6 +18,11 @@ const Products = () => {
   const [price, setPrice] = useState([0, 25000]);
   const [category, setCategory] = useState("");
   const [rating, setRating] = useState(0);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [search, setSearch] = useState("");
+
+  const { getProducts, products, loading } = useProductContext();
+  const keyword = search.trim();
 
   const setCurrentPageHandler = (page) => {
     setCurrentPage(page);
@@ -34,12 +41,14 @@ const Products = () => {
   };
 
   const resetFiltersHandler = () => {
-    setCurrentPage(1);
     setPrice([0, 25000]);
     setCategory("");
     setRating(0);
   };
-  console.log(category);
+
+  useEffect(() => {
+    getProducts(keyword, currentPage, price, category, rating);
+  }, [keyword, currentPage, price, category, rating]);
 
   return (
     <div
@@ -60,125 +69,130 @@ const Products = () => {
         Products
       </h1>
 
-      <Grid container spacing={2}>
-        <Grid item xs={4}>
-          <Box
-            sx={{
-              mx: 5,
-              my: 2,
-              backgroundColor: "white",
-              borderRadius: "1rem",
-              padding: "2rem",
-              border: "1px solid #e0e0e0",
-              flex: 1 / 3,
-            }}
-          >
-            <div
-              style={{
-                alignItems: "center",
-                marginBottom: "2rem",
+      {loading ? (
+        <h1>Loading...</h1>
+      ) : (
+        <Grid container spacing={2}>
+          <Grid item xs={4}>
+            <Box
+              sx={{
+                mx: 5,
+                my: 2,
+                backgroundColor: "white",
+                borderRadius: "1rem",
+                padding: "2rem",
+                border: "1px solid #e0e0e0",
+                flex: 1 / 3,
               }}
             >
-              <Box sx={{ width: 150 }}>
-                <Typography id="range-slider" gutterBottom variant="h6">
-                  Price Range
-                </Typography>
-                <Slider
-                  value={price}
-                  onChange={setPriceHandler}
-                  valueLabelDisplay="auto"
-                  aria-labelledby="range-slider"
-                  getAriaValueText={(value) => `₹${value}`}
-                  min={0}
-                  max={25000}
-                />
-              </Box>
-              <Box sx={{ width: 150 }}>
-                <Typography id="range-slider" gutterBottom variant="h6">
-                  Categories
-                </Typography>
-                <div>
-                  <ul>
-                    {categories.map((category) => (
-                      <li
-                        key={category}
-                        style={{
-                          listStyle: "none",
-                          display: "inline-block",
-                        }}
-                      >
-                        <Button
-                          variant="contained"
-                          onClick={() => setCategoryHandler(category)}
-                          size="small"
-                          sx={{ m: 0.3 }}
-                        >
-                          {category}
-                        </Button>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <Button
-                    sx={{
-                      m: 0.3,
-                      backgroundColor: "red",
-                      color: "white",
-                      fontWeight: "bold",
-                      textTransform: "uppercase",
-                      border: "1px solid",
-                      "&:hover": {
-                        backgroundColor: "white",
-                        color: "red",
-                      },
-                    }}
-                    onClick={resetFiltersHandler}
-                  >
-                    Reset Filters
-                  </Button>
-                </div>
-              </Box>
-              <Box sx={{ width: 150 }}>
-                <Typography id="range-slider" gutterBottom variant="h6">
-                  Rating
-                </Typography>
-                <div>
-                  <Slider
-                    value={rating}
-                    onChange={(event, newValue) => setRatingHandler(newValue)}
-                    valueLabelDisplay="auto"
-                    aria-labelledby="continuous-slider"
-                    min={0}
-                    max={5}
-                  />
-                </div>
-              </Box>
-            </div>
-          </Box>
-        </Grid>
-        <Grid item xs={8}>
-          <Box
-            sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
-          >
-            {[...Array(10).keys()].map((product) => (
-              <Box
-                key={product}
-                sx={{
-                  width: 200,
-                  height: 300,
-                  backgroundColor: "white",
-                  borderRadius: "1rem",
-                  padding: "2rem",
-                  border: "1px solid #e0e0e0",
-                  m: 2,
+              <div
+                style={{
+                  alignItems: "center",
+                  marginBottom: "2rem",
                 }}
               >
-                <h1>{product}</h1>
-              </Box>
-            ))}
-          </Box>
+                <input
+                  type="text"
+                  placeholder="Search Products"
+                  style={{
+                    width: "100%",
+                    padding: "0.5rem",
+                    border: "1px solid #e0e0e0",
+                    borderRadius: "0.5rem",
+                    outline: "none",
+                  }}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+                <Box sx={{ width: 150 }}>
+                  <Typography id="range-slider" gutterBottom variant="h6">
+                    Price Range
+                  </Typography>
+                  <Slider
+                    value={price}
+                    onChange={setPriceHandler}
+                    valueLabelDisplay="auto"
+                    aria-labelledby="range-slider"
+                    min={0}
+                    max={25000}
+                  />
+                </Box>
+                <Box sx={{ width: 150 }}>
+                  <Typography id="range-slider" gutterBottom variant="h6">
+                    Categories
+                  </Typography>
+                  <div>
+                    <ul>
+                      {categories.map((category) => (
+                        <li
+                          key={category}
+                          style={{
+                            listStyle: "none",
+                            display: "inline-block",
+                          }}
+                        >
+                          <Button
+                            variant="contained"
+                            onClick={() => setCategoryHandler(category)}
+                            size="small"
+                            sx={{ m: 0.3 }}
+                          >
+                            {category}
+                          </Button>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <Button
+                      sx={{
+                        m: 0.3,
+                        backgroundColor: "red",
+                        color: "white",
+                        fontWeight: "bold",
+                        textTransform: "uppercase",
+                        border: "1px solid",
+                        "&:hover": {
+                          backgroundColor: "white",
+                          color: "red",
+                        },
+                      }}
+                      onClick={resetFiltersHandler}
+                    >
+                      Reset Filters
+                    </Button>
+                  </div>
+                </Box>
+                <Box sx={{ width: 150 }}>
+                  <Typography id="range-slider" gutterBottom variant="h6">
+                    Rating
+                  </Typography>
+                  <div>
+                    <Slider
+                      value={rating}
+                      onChange={(event, newValue) => setRatingHandler(newValue)}
+                      valueLabelDisplay="auto"
+                      aria-labelledby="continuous-slider"
+                      min={0}
+                      max={5}
+                    />
+                  </div>
+                </Box>
+              </div>
+            </Box>
+          </Grid>
+          <Grid item xs={8}>
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center",
+              }}
+            >
+              <ProductCard products={products} />
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
+      )}
     </div>
   );
 };
