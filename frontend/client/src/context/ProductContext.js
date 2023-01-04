@@ -47,9 +47,29 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {}, []);
+  const getProductDetails = async (id) => {
+    try {
+      setState({ ...state, loading: true });
+      const { data } = await axios.get(`/api/v1/product/${id}`);
+      setState({
+        ...state,
+        product: data.product,
+        loading: false,
+      });
+      console.log(data);
+    } catch (error) {
+      setState({
+        ...state,
+        error: error.response.data.message,
+        loading: false,
+      });
+    }
+  };
+
   return (
-    <ProductContext.Provider value={{ ...state, getProducts }}>
+    <ProductContext.Provider
+      value={{ ...state, getProducts, getProductDetails }}
+    >
       {children}
     </ProductContext.Provider>
   );
