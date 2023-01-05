@@ -5,12 +5,9 @@ import {
   Rating,
   Grid,
   Button,
-  CardMedia,
   Box,
-  Divider,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -18,31 +15,24 @@ import { useProductContext } from "../context/ProductContext";
 import { EffectFade } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
-
-const useStyles = makeStyles({
-  root: {
-    minWidth: 275,
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-});
+import { useAlert } from "react-alert";
 
 const ProductDetails = () => {
-  const classes = useStyles();
-  const { getProductDetails, product } = useProductContext();
+  const { getProductDetails, product, addToCart, cart } = useProductContext();
   const { id } = useParams();
   useEffect(() => {
     getProductDetails(id);
   }, []);
+  const alert = useAlert();
+  const addToCartHandler = (product) => {
+    const isProductInCart = cart.find((item) => item._id === product._id);
+    if (isProductInCart) {
+      alert.error("Product already in cart");
+      return;
+    }
+    addToCart(product);
+    alert.success("Product added to cart");
+  };
   return (
     <div>
       <Helmet>
@@ -142,6 +132,7 @@ const ProductDetails = () => {
                       color: "white",
                       marginTop: "1rem",
                     }}
+                    onClick={() => addToCartHandler(product)}
                   >
                     Add to Cart
                   </Button>

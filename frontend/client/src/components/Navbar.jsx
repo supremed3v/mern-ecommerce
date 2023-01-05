@@ -13,7 +13,9 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useProductContext } from "../context/ProductContext";
+import { Badge } from "@mui/material";
 
 // const pages = ["Home", "Products", "About", "Contact"];
 const pages = [
@@ -39,6 +41,9 @@ const settings = ["Profile", "Account", "Dashboard", "Logout"];
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const navigate = useNavigate();
+
+  const { cart } = useProductContext();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -174,14 +179,24 @@ function Navbar() {
               </IconButton>
             </Tooltip>
 
-            <IconButton>
-              <ShoppingCartIcon
-                sx={{
-                  color: "white",
-                  fontSize: "2rem",
-                  display: { xs: "none", md: "flex" },
-                }}
-              />
+            <IconButton onClick={() => navigate("/cart")}>
+              <Box>
+                {cart.length > 0 ? (
+                  <Badge badgeContent={cart.length} color="error">
+                    <ShoppingCartIcon
+                      sx={{
+                        color: "white",
+                      }}
+                    />
+                  </Badge>
+                ) : (
+                  <ShoppingCartIcon
+                    sx={{
+                      color: "white",
+                    }}
+                  />
+                )}
+              </Box>
             </IconButton>
             <Menu
               sx={{ mt: "45px" }}

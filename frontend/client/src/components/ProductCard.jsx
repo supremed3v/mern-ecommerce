@@ -11,9 +11,23 @@ import {
 } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
+import { useProductContext } from "../context/ProductContext";
+import { useAlert } from "react-alert";
 
 const ProductCard = ({ products }) => {
   const navigate = useNavigate();
+  const { addToCart, cart } = useProductContext();
+  const alert = useAlert();
+
+  const addToCartHandler = (product) => {
+    const isProductInCart = cart.find((item) => item._id === product._id);
+    if (isProductInCart) {
+      alert.error("Product already in cart");
+      return;
+    }
+    addToCart(product);
+    alert.success("Product added to cart");
+  };
 
   return (
     <div>
@@ -28,14 +42,12 @@ const ProductCard = ({ products }) => {
         }}
       >
         {products.map((product) => (
-          <Card
-            sx={{ maxWidth: 345 }}
-            onClick={() => {
-              navigate(`/product/${product._id}`);
-            }}
-            key={product._id}
-          >
-            <CardActionArea>
+          <Card sx={{ maxWidth: 345 }} key={product._id}>
+            <CardActionArea
+              onClick={() => {
+                navigate(`/product/${product._id}`);
+              }}
+            >
               <CardMedia
                 component="img"
                 height="140"
@@ -75,6 +87,7 @@ const ProductCard = ({ products }) => {
                 mb: 2,
                 mx: 2,
               }}
+              onClick={() => addToCartHandler(product)}
             >
               Add to Cart
             </Button>

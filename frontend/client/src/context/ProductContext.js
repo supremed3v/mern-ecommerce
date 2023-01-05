@@ -1,6 +1,8 @@
 import { useEffect, useState, createContext, useContext } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
+import "react-toastify/dist/ReactToastify.css";
 export const ProductContext = createContext();
 
 const initialState = {
@@ -9,6 +11,7 @@ const initialState = {
   loading: false,
   error: null,
   cart: [],
+  shippingInfo: {},
 };
 
 export const ProductProvider = ({ children }) => {
@@ -66,9 +69,78 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
+  const addToCart = (product) => {
+    const { cart } = state;
+    const check = cart.every((item) => {
+      return item._id !== product._id;
+    });
+    if (check) {
+      setState({ ...state, cart: [...cart, { ...product, quantity: 1 }] });
+      toast.success("The product has been added to cart.", {
+        position: toast.POSITION.BOTTOM_LEFT,
+      });
+    } else {
+      toast.error("Product already in cart.", {
+        position: toast.POSITION.BOTTOM_LEFT,
+      });
+    } // TODO - add toastify
+  };
+
+  const removeProductFromCart = (id) => {
+    const { cart } = state;
+    cart.forEach((item, index) => {
+      if (item._id === id) {
+        cart.splice(index, 1);
+      }
+    });
+    setState({ ...state, cart: cart });
+  };
+
+  const totalPrice = () => {
+    const { cart } = state;
+    const total = cart.reduce((prev, item) => {
+      return prev + item.price * item.quantity;
+    }, 0);
+    return total;
+  };
+
+  const addQuantity = (id) => {
+    const { cart } = state;
+    cart.forEach((item) => {
+      if (item._id === id) {
+        item.quantity += 1;
+      }
+    });
+    setState({ ...state, cart: cart });
+  };
+
+  const reduceQuantity = (id) => {
+    const { cart } = state;
+    cart.forEach((item) => {
+      if (item._id === id) {
+        item.quantity === 1 ? (item.quantity = 1) : (item.quantity -= 1);
+      }
+    });
+    setState({ ...state, cart: cart });
+  };
+
+  const saveShippingInfo = (data) => {
+    setState({ ...state, shippingInfo: data });
+  };
+
   return (
     <ProductContext.Provider
-      value={{ ...state, getProducts, getProductDetails }}
+      value={{
+        ...state,
+        getProducts,
+        getProductDetails,
+        addToCart,
+        removeProductFromCart,
+        totalPrice,
+        addQuantity,
+        reduceQuantity,
+        saveShippingInfo,
+      }}
     >
       {children}
     </ProductContext.Provider>
