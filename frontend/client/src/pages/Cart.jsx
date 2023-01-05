@@ -1,7 +1,7 @@
 import React from "react";
 import { Helmet } from "react-helmet";
 import { useProductContext } from "../context/ProductContext";
-import { Box, Grid, Typography, Button } from "@mui/material";
+import { Box, Grid, Typography, Button, Divider } from "@mui/material";
 
 const Cart = () => {
   const { cart, addQuantity, reduceQuantity } = useProductContext();
@@ -16,61 +16,81 @@ const Cart = () => {
       </Helmet>
       <Box
         sx={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: 3,
-          my: 6,
-          mx: 2,
+          mt: 5,
         }}
       >
-        <Grid item xs={12}>
-          <Typography variant="h4">Cart</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="h6">Total Items: {cart.length}</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="h6">Total Price: ${totalPrice}</Typography>
-        </Grid>
+        <Typography textAlign={"center"} variant="h2">
+          Cart
+        </Typography>
       </Box>
       {cart.length === 0 ? (
-        <Typography variant="h6">No items in cart</Typography>
+        <Typography variant="h6" textAlign={"center"}>
+          No items in cart
+        </Typography>
       ) : (
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: 3,
-            my: 6,
-            mx: 2,
-          }}
-        >
+        <div>
           {cart.map((item) => (
             <div key={item._id}>
-              <Typography variant="h6">Name: {item.name}</Typography>
-              <Typography variant="h6">Quantity: {item.quantity}</Typography>
-              <Button
-                variant="contained"
-                onClick={() => reduceQuantity(item._id)}
-              >
-                -
-              </Button>
-              <Button variant="contained" onClick={() => addQuantity(item._id)}>
-                +
-              </Button>
-              <Typography variant="h6">Price: ${item.price}</Typography>
-              <img
-                src={item.images[0].url}
-                alt=""
-                style={{
-                  width: "100px",
-                  height: "100px",
-                  objectFit: "cover",
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(6, 1fr)",
+                  gap: 2,
+                  my: 6,
+                  mx: 2,
                 }}
-              />
+              >
+                <img
+                  src={item.images[0].url}
+                  alt={item.name}
+                  style={{ width: "100px", height: "100px" }}
+                />
+                <Grid item xs={12}>
+                  <Typography variant="h6">{item.name}</Typography>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Typography variant="h6">Price: ${item.price}</Typography>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Typography variant="h6">
+                    Quantity: {item.quantity}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    variant="contained"
+                    onClick={() => addQuantity(item.id)}
+                    size="small"
+                  >
+                    +
+                  </Button>
+                  <Button
+                    variant="contained"
+                    onClick={() => reduceQuantity(item.id)}
+                    size="small"
+                  >
+                    -
+                  </Button>
+                </Grid>
+              </Box>
             </div>
           ))}
-        </Box>
+          <Divider />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              my: 6,
+              mx: 45,
+            }}
+          >
+            <Grid item xs={12}>
+              <Typography variant="h4">Total Price: ${totalPrice}</Typography>
+            </Grid>
+          </Box>
+        </div>
       )}
     </div>
   );
