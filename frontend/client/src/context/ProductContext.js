@@ -12,6 +12,7 @@ const initialState = {
   error: null,
   cart: [],
   shippingInfo: {},
+  totalPrice: 0,
 };
 
 export const ProductProvider = ({ children }) => {
@@ -93,15 +94,6 @@ export const ProductProvider = ({ children }) => {
         cart.splice(index, 1);
       }
     });
-    setState({ ...state, cart: cart });
-  };
-
-  const totalPrice = () => {
-    const { cart } = state;
-    const total = cart.reduce((prev, item) => {
-      return prev + item.price * item.quantity;
-    }, 0);
-    return total;
   };
 
   const addQuantity = (id) => {
@@ -118,6 +110,7 @@ export const ProductProvider = ({ children }) => {
     const { cart } = state;
     cart.forEach((item) => {
       if (item._id === id) {
+        // if item quantity is -1 then remove it from cart
         item.quantity === 1 ? (item.quantity = 1) : (item.quantity -= 1);
       }
     });
@@ -136,7 +129,6 @@ export const ProductProvider = ({ children }) => {
         getProductDetails,
         addToCart,
         removeProductFromCart,
-        totalPrice,
         addQuantity,
         reduceQuantity,
         saveShippingInfo,
