@@ -9,6 +9,7 @@ import "@fontsource/roboto/700.css";
 import { ProductProvider } from "./context/ProductContext";
 import { positions, transitions, Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
+import { AuthContextProvider } from "./context/AuthContext";
 
 const options = {
   timeout: 5000,
@@ -20,9 +21,11 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <ProductProvider>
-      <AlertProvider template={AlertTemplate} {...options}>
-        <App />
-      </AlertProvider>
+      <AuthContextProvider>
+        <AlertProvider template={AlertTemplate} {...options}>
+          <App />
+        </AlertProvider>
+      </AuthContextProvider>
     </ProductProvider>
   </React.StrictMode>
 );

@@ -15,6 +15,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useProductContext } from "../context/ProductContext";
+import { useAuthContext } from "../context/AuthContext";
 import { Badge } from "@mui/material";
 
 // const pages = ["Home", "Products", "About", "Contact"];
@@ -44,6 +45,7 @@ function Navbar() {
   const navigate = useNavigate();
 
   const { cart } = useProductContext();
+  const { authState } = useAuthContext();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -173,11 +175,26 @@ function Navbar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar />
-              </IconButton>
-            </Tooltip>
+            {authState.user === null ? (
+              <Button
+                variant="contained"
+                sx={{
+                  mr: 1,
+                  bgcolor: "white",
+                  color: "darkblue",
+                  "&:hover": { bgcolor: "darkblue", color: "white" },
+                }}
+                onClick={() => navigate("/login-signup")}
+              >
+                Login
+              </Button>
+            ) : (
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar />
+                </IconButton>
+              </Tooltip>
+            )}
 
             <IconButton onClick={() => navigate("/cart")}>
               <Box>
