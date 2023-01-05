@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Link, NavLink } from "react-router-dom";
 
 // const pages = ["Home", "Products", "About", "Contact"];
@@ -169,9 +170,19 @@ function Navbar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar />
               </IconButton>
             </Tooltip>
+
+            <IconButton>
+              <ShoppingCartIcon
+                sx={{
+                  color: "white",
+                  fontSize: "2rem",
+                  display: { xs: "none", md: "flex" },
+                }}
+              />
+            </IconButton>
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"

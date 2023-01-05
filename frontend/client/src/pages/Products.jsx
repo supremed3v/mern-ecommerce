@@ -18,7 +18,6 @@ const Products = () => {
   const [price, setPrice] = useState([0, 25000]);
   const [category, setCategory] = useState("");
   const [rating, setRating] = useState(0);
-  const [filteredProducts, setFilteredProducts] = useState([]);
   const [search, setSearch] = useState("");
 
   const { getProducts, products, loading } = useProductContext();
@@ -45,10 +44,6 @@ const Products = () => {
     setCategory("");
     setRating(0);
   };
-
-  useEffect(() => {
-    getProducts(keyword, currentPage, price, category, rating);
-  }, [keyword, currentPage, price, category, rating]);
 
   return (
     <div
@@ -177,10 +172,43 @@ const Products = () => {
                     />
                   </div>
                 </Box>
+                <Button
+                  variant="contained"
+                  sx={{
+                    m: 0.3,
+                    color: "white",
+                    fontWeight: "bold",
+                    textTransform: "uppercase",
+                    border: "1px solid",
+                    "&:hover": {
+                      backgroundColor: "white",
+                      color: "red",
+                    },
+                  }}
+                  onClick={() =>
+                    getProducts(keyword, currentPage, price, category, rating)
+                  }
+                >
+                  Apply Filters
+                </Button>
               </div>
             </Box>
           </Grid>
           <Grid item xs={8}>
+            <Box>
+              {products.length === 0 && (
+                <Typography
+                  variant="h6"
+                  color="red"
+                  sx={{
+                    fontSize: "2rem",
+                    fontWeight: "bold",
+                  }}
+                >
+                  No Products Found
+                </Typography>
+              )}
+            </Box>
             <Box
               sx={{
                 display: "flex",
