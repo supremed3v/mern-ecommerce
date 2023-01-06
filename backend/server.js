@@ -8,6 +8,8 @@ import connectDB from "./db.js";
 import userRoutes from "./routes/userRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import bodyParser from "body-parser";
+import orderRoutes from "./routes/orderRoutes.js";
+import paymentRoutes from "./routes/paymentRoutes.js";
 
 dotenv.config();
 
@@ -29,6 +31,8 @@ app.use(
 
 app.use("/api/v1", userRoutes);
 app.use("/api/v1", productRoutes);
+app.use("/api/v1", orderRoutes);
+app.use("/api/v1", paymentRoutes);
 
 // Connect to cloudinary
 cloudinary.config({
