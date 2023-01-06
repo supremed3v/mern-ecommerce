@@ -45,7 +45,12 @@ function Navbar() {
   const navigate = useNavigate();
 
   const { cart } = useProductContext();
-  const { authState } = useAuthContext();
+  const { authState, logout } = useAuthContext();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -232,7 +237,12 @@ function Navbar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem
+                  key={setting}
+                  onClick={
+                    setting === "Logout" ? handleLogout : handleCloseUserMenu
+                  }
+                >
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}

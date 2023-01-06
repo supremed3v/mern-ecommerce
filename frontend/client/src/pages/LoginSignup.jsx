@@ -15,16 +15,24 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import { useState } from "react";
+import { useAuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginSignup() {
+  const navigate = useNavigate();
+  const { signup, login, loading, authState } = useAuthContext();
   const [value, setValue] = useState(0);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const data = { email, password };
+    if (value === 0) {
+      signup(data);
+    } else {
+      login(data);
+      navigate("/");
+    }
   };
 
   const handleChange = (event, newValue) => {
@@ -33,6 +41,7 @@ export default function LoginSignup() {
 
   return (
     <Container component="main" maxWidth="xs">
+      {loading && <h1>Loading...</h1>}
       <TabContext value={value}>
         <TabList
           onChange={handleChange}
@@ -170,6 +179,8 @@ export default function LoginSignup() {
                   name="email"
                   autoComplete="email"
                   autoFocus
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 <TextField
                   margin="normal"
@@ -180,6 +191,8 @@ export default function LoginSignup() {
                   type="password"
                   id="password"
                   autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <FormControlLabel
                   control={<Checkbox value="remember" color="primary" />}
