@@ -2,12 +2,11 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import { useProductContext } from "../context/ProductContext";
 import { Box, Grid, Typography, Button, Divider } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
-  const { cart, addQuantity, reduceQuantity } = useProductContext();
-  const totalPrice = cart.reduce((acc, item) => {
-    return acc + item.price * item.quantity;
-  }, 0);
+  const navigate = useNavigate();
+  const { cart, addQuantity, reduceQuantity, totalPrice } = useProductContext();
 
   return (
     <div>
@@ -61,14 +60,14 @@ const Cart = () => {
                 <Grid item xs={12}>
                   <Button
                     variant="contained"
-                    onClick={() => addQuantity(item.id)}
+                    onClick={() => addQuantity(item._id)}
                     size="small"
                   >
                     +
                   </Button>
                   <Button
                     variant="contained"
-                    onClick={() => reduceQuantity(item.id)}
+                    onClick={() => reduceQuantity(item._id)}
                     size="small"
                   >
                     -
@@ -89,6 +88,13 @@ const Cart = () => {
             <Grid item xs={12}>
               <Typography variant="h4">Total Price: ${totalPrice}</Typography>
             </Grid>
+            <Button
+              variant="contained"
+              size="large"
+              onClick={() => navigate("/checkout")}
+            >
+              Checkout
+            </Button>
           </Box>
         </div>
       )}

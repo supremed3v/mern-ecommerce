@@ -7,6 +7,7 @@ import ProductDetails from "./pages/ProductDetails";
 import { Helmet } from "react-helmet";
 import Cart from "./pages/Cart";
 import LoginSignup from "./pages/LoginSignup";
+import Checkout from "./pages/Checkout";
 function App() {
   return (
     <BrowserRouter>
@@ -22,10 +23,10 @@ function App() {
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/login-signup" element={<LoginSignup />} />
+          <Route path="/checkout" element={<Checkout />} />
           {/*<Route path="/wishlist" element={<Wishlist/>} />
-          <Route path="/profile" element={<Profile/>} />
           <Route path="/orders" element={<Orders/>} />
-          <Route path="/checkout" element={<Checkout/>} />
+          <Route path="/profile" element={<Profile/>} />
           <Route path="/address" element={<Address/>} />
           <Route path="/payment" element={<Payment/>} />
           <Route path="/order-success" element={<OrderSuccess/>} />

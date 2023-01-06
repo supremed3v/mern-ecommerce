@@ -121,6 +121,11 @@ export const ProductProvider = ({ children }) => {
     setState({ ...state, shippingInfo: data });
   };
 
+  const { cart } = state;
+  const totalPrice = cart.reduce((acc, item) => {
+    return acc + item.price * item.quantity;
+  }, 0);
+
   return (
     <ProductContext.Provider
       value={{
@@ -132,6 +137,7 @@ export const ProductProvider = ({ children }) => {
         addQuantity,
         reduceQuantity,
         saveShippingInfo,
+        totalPrice,
       }}
     >
       {children}

@@ -20,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function LoginSignup() {
   const navigate = useNavigate();
-  const { signup, login, loading, authState } = useAuthContext();
+  const { signup, login, authState } = useAuthContext();
   const [value, setValue] = useState(0);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,8 +30,12 @@ export default function LoginSignup() {
     if (value === 0) {
       signup(data);
     } else {
-      login(data);
-      navigate("/");
+      if (authState.error) {
+        console.log(authState.error);
+      } else {
+        login(data);
+        navigate("/");
+      }
     }
   };
 
@@ -41,7 +45,7 @@ export default function LoginSignup() {
 
   return (
     <Container component="main" maxWidth="xs">
-      {loading && <h1>Loading...</h1>}
+      {authState.loading && <h1>Loading...</h1>}
       <TabContext value={value}>
         <TabList
           onChange={handleChange}
