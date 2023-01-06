@@ -3,101 +3,127 @@ import { Helmet } from "react-helmet";
 import { useProductContext } from "../context/ProductContext";
 import { Box, Grid, Typography, Button, Divider } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../context/AuthContext";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 
+import { useAlert } from "react-alert";
 const Cart = () => {
   const navigate = useNavigate();
   const { cart, addQuantity, reduceQuantity, totalPrice } = useProductContext();
-
+  const { isAuthenticated } = useAuthContext();
+  const alert = useAlert();
   return (
     <div>
       <Helmet>
         <title>Cart</title>
       </Helmet>
+      {cart.length === 0 ? (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100vh",
+          }}
+        >
+          <Typography variant="h4" sx={{ mb: 2 }}>
+            Your cart is empty
+          </Typography>
+        </Box>
+      ) : (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Product</TableCell>
+                <TableCell align="center">Description</TableCell>
+                <TableCell align="center">Image</TableCell>
+                <TableCell align="center">Price</TableCell>
+                <TableCell align="center">Quantity</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {cart.map((item) => (
+                <TableRow
+                  key={item._id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {item.name}
+                  </TableCell>
+                  <TableCell align="center">
+                    {item.description.substring(0, 30)}...
+                  </TableCell>
+                  <TableCell align="center">
+                    <img
+                      src={item.images[0].url}
+                      alt={item.name}
+                      style={{ width: "100px" }}
+                    />
+                  </TableCell>
+                  <TableCell align="center">{item.price}</TableCell>
+                  <TableCell align="center">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => reduceQuantity(item._id)}
+                    >
+                      -
+                    </Button>
+                    <span style={{ margin: "0 10px" }}>{item.quantity}</span>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => addQuantity(item._id)}
+                    >
+                      +
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+              <TableRow>
+                <TableCell rowSpan={8} />
+                <TableCell colSpan={2}>
+                  <Typography variant="h6">Total</Typography>
+                </TableCell>
+                <TableCell align="left">
+                  <Typography variant="h6">${totalPrice}/=</Typography>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
       <Box
         sx={{
-          mt: 5,
+          display: "flex",
+          justifyContent: "flex-end",
+          mt: 2,
+          mr: 10,
         }}
       >
-        <Typography textAlign={"center"} variant="h2">
-          Cart
-        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            if (isAuthenticated === false) {
+              alert.show("Please login to checkout");
+              navigate("/login-signup");
+            } else {
+              navigate("/checkout");
+            }
+          }}
+        >
+          Checkout
+        </Button>
       </Box>
-      {cart.length === 0 ? (
-        <Typography variant="h6" textAlign={"center"}>
-          No items in cart
-        </Typography>
-      ) : (
-        <div>
-          {cart.map((item) => (
-            <div key={item._id}>
-              <Box
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(6, 1fr)",
-                  gap: 2,
-                  my: 6,
-                  mx: 2,
-                }}
-              >
-                <img
-                  src={item.images[0].url}
-                  alt={item.name}
-                  style={{ width: "100px", height: "100px" }}
-                />
-                <Grid item xs={12}>
-                  <Typography variant="h6">{item.name}</Typography>
-                </Grid>
-
-                <Grid item xs={12}>
-                  <Typography variant="h6">Price: ${item.price}</Typography>
-                </Grid>
-
-                <Grid item xs={12}>
-                  <Typography variant="h6">
-                    Quantity: {item.quantity}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Button
-                    variant="contained"
-                    onClick={() => addQuantity(item._id)}
-                    size="small"
-                  >
-                    +
-                  </Button>
-                  <Button
-                    variant="contained"
-                    onClick={() => reduceQuantity(item._id)}
-                    size="small"
-                  >
-                    -
-                  </Button>
-                </Grid>
-              </Box>
-            </div>
-          ))}
-          <Divider />
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-              my: 6,
-              mx: 45,
-            }}
-          >
-            <Grid item xs={12}>
-              <Typography variant="h4">Total Price: ${totalPrice}</Typography>
-            </Grid>
-            <Button
-              variant="contained"
-              size="large"
-              onClick={() => navigate("/checkout")}
-            >
-              Checkout
-            </Button>
-          </Box>
-        </div>
-      )}
     </div>
   );
 };
