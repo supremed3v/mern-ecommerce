@@ -15,9 +15,10 @@ import Paper from "@mui/material/Paper";
 import { useAlert } from "react-alert";
 const Cart = () => {
   const navigate = useNavigate();
-  const { cart, addQuantity, reduceQuantity, totalPrice } = useProductContext();
-  const { isAuthenticated } = useAuthContext();
+  const { addQuantity, reduceQuantity, totalPrice } = useProductContext();
+  const { authState } = useAuthContext();
   const alert = useAlert();
+  const cart = JSON.parse(localStorage.getItem("cart"));
   return (
     <div>
       <Helmet>
@@ -113,9 +114,11 @@ const Cart = () => {
           variant="contained"
           color="primary"
           onClick={() => {
-            if (isAuthenticated === false) {
+            if (authState.isAuthenticated === false) {
               alert.show("Please login to checkout");
-              navigate("/login-signup");
+              setTimeout(() => {
+                navigate("/login-signup");
+              }, 1000);
             } else {
               navigate("/checkout");
             }

@@ -1,4 +1,4 @@
-import { useEffect, useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -77,6 +77,10 @@ export const ProductProvider = ({ children }) => {
     });
     if (check) {
       setState({ ...state, cart: [...cart, { ...product, quantity: 1 }] });
+      localStorage.setItem(
+        "cart",
+        JSON.stringify([...cart, { ...product, quantity: 1 }])
+      );
       toast.success("The product has been added to cart.", {
         position: toast.POSITION.BOTTOM_LEFT,
       });
@@ -84,7 +88,7 @@ export const ProductProvider = ({ children }) => {
       toast.error("Product already in cart.", {
         position: toast.POSITION.BOTTOM_LEFT,
       });
-    } // TODO - add toastify
+    }
   };
 
   const removeProductFromCart = (id) => {
@@ -94,6 +98,8 @@ export const ProductProvider = ({ children }) => {
         cart.splice(index, 1);
       }
     });
+    setState({ ...state, cart: cart });
+    localStorage.setItem("cart", JSON.stringify(cart));
   };
 
   const addQuantity = (id) => {
@@ -104,6 +110,7 @@ export const ProductProvider = ({ children }) => {
       }
     });
     setState({ ...state, cart: cart });
+    localStorage.setItem("cart", JSON.stringify(cart));
   };
 
   const reduceQuantity = (id) => {
@@ -115,6 +122,7 @@ export const ProductProvider = ({ children }) => {
       }
     });
     setState({ ...state, cart: cart });
+    localStorage.setItem("cart", JSON.stringify(cart));
   };
 
   const saveShippingInfo = (data) => {
@@ -125,6 +133,17 @@ export const ProductProvider = ({ children }) => {
   const totalPrice = cart.reduce((acc, item) => {
     return acc + item.price * item.quantity;
   }, 0);
+
+  const checkCart = () => {
+    const cart = localStorage.getItem("cart");
+    if (cart && cart.length > 0) {
+      setState({ ...state, cart: JSON.parse(cart) });
+    }
+  };
+
+  useEffect(() => {
+    checkCart();
+  }, []);
 
   return (
     <ProductContext.Provider

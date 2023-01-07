@@ -41,58 +41,59 @@ const ProductCard = ({ products }) => {
           mx: 2,
         }}
       >
-        {products.map((product) => (
-          <Card sx={{ maxWidth: 345 }} key={product._id}>
-            <CardActionArea
-              onClick={() => {
-                navigate(`/product/${product._id}`);
-              }}
-            >
-              <CardMedia
-                component="img"
-                height="140"
-                image={product.images[0].url}
-                alt={product.name}
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {product.name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {product.description}
-                </Typography>
-                <Typography variant="h6" color="text.secondary">
-                  ${product.price}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {product.countInStock} in stock
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {product.numReviews} reviews
-                </Typography>
-                <Rating name="read-only" value={product.rating} readOnly />
-              </CardContent>
-            </CardActionArea>
-            <Button
-              size="small"
-              color="primary"
-              variant="contained"
-              sx={{
-                backgroundColor: "#f50057",
-                color: "#fff",
-                "&:hover": {
+        {products &&
+          products.map((product) => (
+            <Card sx={{ maxWidth: 345 }} key={product._id}>
+              <CardActionArea
+                onClick={() => {
+                  navigate(`/product/${product._id}`);
+                }}
+              >
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={product.images[0].url}
+                  alt={product.name}
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {product.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {product.description}
+                  </Typography>
+                  <Typography variant="h6" color="text.secondary">
+                    ${product.price}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {product.countInStock} in stock
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {product.numReviews} reviews
+                  </Typography>
+                  <Rating name="read-only" value={product.rating} readOnly />
+                </CardContent>
+              </CardActionArea>
+              <Button
+                size="small"
+                color="primary"
+                variant="contained"
+                sx={{
                   backgroundColor: "#f50057",
                   color: "#fff",
-                },
-                mb: 2,
-                mx: 2,
-              }}
-              onClick={() => addToCartHandler(product)}
-            >
-              Add to Cart
-            </Button>
-          </Card>
-        ))}
+                  "&:hover": {
+                    backgroundColor: "#f50057",
+                    color: "#fff",
+                  },
+                  mb: 2,
+                  mx: 2,
+                }}
+                onClick={() => addToCartHandler(product)}
+              >
+                Add to Cart
+              </Button>
+            </Card>
+          ))}
       </Box>
     </div>
   );

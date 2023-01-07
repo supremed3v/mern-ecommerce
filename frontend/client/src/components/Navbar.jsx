@@ -17,6 +17,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useProductContext } from "../context/ProductContext";
 import { useAuthContext } from "../context/AuthContext";
 import { Badge } from "@mui/material";
+import { useEffect } from "react";
 
 // const pages = ["Home", "Products", "About", "Contact"];
 const pages = [
@@ -43,9 +44,9 @@ function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
-
-  const { cart } = useProductContext();
   const { authState, logout } = useAuthContext();
+
+  const cart = JSON.parse(localStorage.getItem("cart"));
 
   const handleLogout = () => {
     logout();

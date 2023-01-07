@@ -19,13 +19,11 @@ const options = {
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <ProductProvider>
-      <AuthContextProvider>
-        <AlertProvider template={AlertTemplate} {...options}>
-          <App />
-        </AlertProvider>
-      </AuthContextProvider>
-    </ProductProvider>
-  </React.StrictMode>
+  <ProductProvider>
+    <AuthContextProvider>
+      <AlertProvider template={AlertTemplate} {...options}>
+        <App />
+      </AlertProvider>
+    </AuthContextProvider>
+  </ProductProvider>
 );
