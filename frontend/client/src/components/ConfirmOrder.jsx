@@ -1,11 +1,6 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import { Formik, Form } from "formik";
-import * as Yup from "yup";
 import { useProductContext } from "../context/ProductContext";
 import {useAuthContext} from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +9,6 @@ import Checkout from "../pages/Checkout";
 
 export default function ConfirmOrder() {
   const {authState} = useAuthContext();
-  const user = authState.user;
   const navigate = useNavigate();
   const {shippingInfo, totalPrice, cart} = useProductContext();
 
@@ -46,7 +40,7 @@ export default function ConfirmOrder() {
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <Typography>Name:</Typography>
-          <Typography>{user.name}</Typography>
+          <Typography>{authState.user.name}</Typography>
         </Grid>
         <Grid item xs={12} md={6}>
           <Typography>Phone:</Typography>

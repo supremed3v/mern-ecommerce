@@ -6,6 +6,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { Box, Button } from "@mui/material";
 import { useProductContext } from "../context/ProductContext";
+import { useNavigate } from "react-router-dom";
 import Checkout from "../pages/Checkout";
 export default function AddressForm() {
   const [values, setValues] = React.useState({
@@ -18,24 +19,28 @@ export default function AddressForm() {
   });
   const { saveShippingInfo } = useProductContext();
   const [errors, setErrors] = React.useState({});
-
+  const navigate = useNavigate();
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setValues({
       ...values,
       [name]: value,
     });
-    saveShippingInfo(values);
   };
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault()
+    saveShippingInfo(values);
+    navigate("/order/confirm");
+
+  }
 
   return (
     <React.Fragment>
-      <Checkout activeStep={0} />
+      {/* <Checkout activeStep={0} /> */}
       <Typography variant="h6" gutterBottom>
         Shipping address
       </Typography>
-      <Checkout activeStep={0} />
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <TextField
@@ -123,7 +128,9 @@ export default function AddressForm() {
           />
         </Grid>
       </Grid>
-      <Button variant="contained" color="primary" sx={{ mt: 3, mb: 2 }} >
+      <Button variant="contained" color="primary" sx={{ mt: 3, mb: 2 }} 
+      onClick={handleFormSubmit}
+      >
         Next
       </Button>
     </React.Fragment>

@@ -43,9 +43,10 @@ export const AuthContextProvider = ({ children }) => {
       const res = await axios.get("/api/v1/me");
       setAuthState({
         ...authState,
-        user: res.data,
+        user: res.data.user,
         loading: false,
         error: false,
+        isAuthenticated: true,
       });
     } catch (error) {
       setAuthState({

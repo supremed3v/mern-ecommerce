@@ -17,6 +17,8 @@ import { Button } from "@mui/material";
 export default function Payment() {
   const alert = useAlert();
   const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
+  const stripeKey = JSON.stringify(localStorage.getItem("stripeKey"))
+  console.log(stripeKey)
 
   const stripe = useStripe();
   const elements = useElements();
@@ -44,7 +46,12 @@ export default function Payment() {
     payBtn.current.disabled = true;
 
     try {
-      const {data} = await axios.post("/api/v1/payment/process", paymentData);
+      const {data} = await axios.post("/api/v1/payment/process", paymentData, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${stripeKey}`
+        }
+      });
 
       const clientSecret = data.client_secret;
 
