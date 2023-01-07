@@ -5,7 +5,8 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Grid from "@mui/material/Grid";
 import { useProductContext } from "../context/ProductContext";
-import {CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements} from '@stripe/react-stripe-js';
+import {CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements, Elements} from '@stripe/react-stripe-js';
+
 
 import { useAlert } from "react-alert";
 
@@ -13,19 +14,19 @@ import axios from "axios";
 import { useAuthContext } from "../context/AuthContext";
 import Checkout from "../pages/Checkout";
 import { Button } from "@mui/material";
+import { loadStripe } from "@stripe/stripe-js";
 
-export default function Payment() {
+function FormFunction() {
   const alert = useAlert();
   const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
-  const stripeKey = JSON.stringify(localStorage.getItem("stripeKey"))
-  console.log(stripeKey)
 
   const stripe = useStripe();
   const elements = useElements();
   const payBtn = React.useRef(null)
 
   const {cart, shippingInfo, createOrder} = useProductContext();
-  const {user} = useAuthContext();
+  const {authState} = useAuthContext();
+  console.log(authState.user.name)
 
   const paymentData = {
     amount: orderInfo.totalPrice * 100,
@@ -49,7 +50,6 @@ export default function Payment() {
       const {data} = await axios.post("/api/v1/payment/process", paymentData, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${stripeKey}`
         }
       });
 
@@ -61,13 +61,13 @@ export default function Payment() {
         payment_method: {
           card: elements.getElement(CardNumberElement),
           billing_details: {
-            name: user.name,
-            email: user.email,
+            name: authState.user.name,
+            email: authState.user.email,
             address:{
               line1: shippingInfo.address,
               city: shippingInfo.city,
               state: shippingInfo.state,
-              country: shippingInfo.country,
+              country: "PK",
               postal_code: shippingInfo.pinCode,
             }
           }
@@ -90,7 +90,7 @@ export default function Payment() {
 
     } catch (error) {
       payBtn.current.disabled = false;
-      alert.error(error.response.data.message);
+      console.log(error);
     }
   }
 
@@ -128,5 +128,13 @@ export default function Payment() {
       </Grid>
       
     </React.Fragment>
+  );
+}
+
+export default function Payment () {
+  return (
+    <Elements stripe={loadStripe(process.env.REACT_APP_STRIPE_API_KEY)}>
+      <FormFunction />
+    </Elements>
   );
 }

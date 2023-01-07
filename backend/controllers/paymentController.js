@@ -1,6 +1,6 @@
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_API_SECRET);
+const stripe = new Stripe(`${process.env.STRIPE_API_SECRET}`);
 
 export const processPayment = async (req, res) => {
   const myPayment = await stripe.paymentIntents.create({

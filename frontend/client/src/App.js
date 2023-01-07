@@ -7,7 +7,6 @@ import ProductDetails from "./pages/ProductDetails";
 import { Helmet } from "react-helmet";
 import Cart from "./pages/Cart";
 import LoginSignup from "./pages/LoginSignup";
-import Checkout from "./pages/Checkout";
 import AddressForm from "./components/AddressForm";
 import ConfirmOrder from "./components/ConfirmOrder";
 import { useAuthContext } from "./context/AuthContext";
@@ -25,7 +24,6 @@ function App() {
     try {
       const {data} = await axios.get("/api/v1/stripeapi")
       setStripeKey(data.stripeApiKey)
-      localStorage.setItem("stripeKey", data.stripeApiKey)
     } catch (error) {
       console.log(error)
     }
@@ -53,7 +51,7 @@ function App() {
           <Route path="/login-signup" element={<LoginSignup />} />
           <Route path="/checkout" element={<AddressForm/>} />
           <Route path="/order/confirm" element={<ConfirmOrder />} />
-          <Route path="/process/payment" element={<Elements stripe={loadStripe(stripeKey)}><Payment /></Elements>} />
+          <Route path="/process/payment" element={<Payment/>} />
           
 
           {/*<Route path="/wishlist" element={<Wishlist/>} />
