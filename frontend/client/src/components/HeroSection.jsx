@@ -12,7 +12,7 @@ const HeroSection = () => {
     <Box
       sx={{
         flex: 1,
-        height: "60vh",
+        height: "40vh",
         display: "flex",
         alignItems: "center",
         flexDirection: "column",
@@ -25,7 +25,7 @@ const HeroSection = () => {
         sx={{
           color: "primary.500",
           fontWeight: 600,
-          fontSize: "sm",
+          fontSize: "22px",
           textTransform: "uppercase",
           letterSpacing: 0.5,
         }}

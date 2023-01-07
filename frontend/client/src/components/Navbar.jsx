@@ -204,20 +204,13 @@ function Navbar() {
 
             <IconButton onClick={() => navigate("/cart")}>
               <Box>
-                {cart.length > 0 ? (
+                {cart && cart.length > 0 ? (
                   <Badge badgeContent={cart.length} color="error">
-                    <ShoppingCartIcon
-                      sx={{
-                        color: "white",
-                      }}
-                    />
+                    <ShoppingCartIcon sx={{ color: "white" }} />
                   </Badge>
-                ) : (
-                  <ShoppingCartIcon
-                    sx={{
-                      color: "white",
-                    }}
-                  />
+                ): (
+                  <ShoppingCartIcon sx={{ color: "white" }} />
+                  
                 )}
               </Box>
             </IconButton>

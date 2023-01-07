@@ -194,7 +194,7 @@ const Products = () => {
               </div>
             </Box>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={8} >
             <Box>
               {products.length === 0 && (
                 <Typography

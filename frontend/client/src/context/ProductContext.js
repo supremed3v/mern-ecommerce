@@ -13,11 +13,11 @@ const initialState = {
   cart: [],
   shippingInfo: {},
   totalPrice: 0,
+  order: {},
 };
 
 export const ProductProvider = ({ children }) => {
   const [state, setState] = useState(initialState);
-
   const getProducts = async (
     keyword = "",
     currentPage = 1,
@@ -138,8 +138,16 @@ export const ProductProvider = ({ children }) => {
     const cart = localStorage.getItem("cart");
     if (cart && cart.length > 0) {
       setState({ ...state, cart: JSON.parse(cart) });
+    } else {
+      setState({ ...state, cart: [] });
     }
   };
+
+
+  const createOrder = async (order) => {
+    const {data} = await axios.post("/api/v1/order/new", order);
+    setState({...state, order: data.order});
+  }
 
   useEffect(() => {
     checkCart();
@@ -157,6 +165,7 @@ export const ProductProvider = ({ children }) => {
         reduceQuantity,
         saveShippingInfo,
         totalPrice,
+        createOrder
       }}
     >
       {children}

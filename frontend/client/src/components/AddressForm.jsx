@@ -6,6 +6,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { Box, Button } from "@mui/material";
 import { useProductContext } from "../context/ProductContext";
+import Checkout from "../pages/Checkout";
 export default function AddressForm() {
   const [values, setValues] = React.useState({
     address: "",
@@ -27,11 +28,14 @@ export default function AddressForm() {
     saveShippingInfo(values);
   };
 
+
   return (
     <React.Fragment>
+      <Checkout activeStep={0} />
       <Typography variant="h6" gutterBottom>
         Shipping address
       </Typography>
+      <Checkout activeStep={0} />
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <TextField
@@ -119,6 +123,9 @@ export default function AddressForm() {
           />
         </Grid>
       </Grid>
+      <Button variant="contained" color="primary" sx={{ mt: 3, mb: 2 }} >
+        Next
+      </Button>
     </React.Fragment>
   );
 }

@@ -8,7 +8,28 @@ import { Helmet } from "react-helmet";
 import Cart from "./pages/Cart";
 import LoginSignup from "./pages/LoginSignup";
 import Checkout from "./pages/Checkout";
+import AddressForm from "./components/AddressForm";
+import ConfirmOrder from "./components/ConfirmOrder";
+import { useAuthContext } from "./context/AuthContext";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import Payment from "./components/Payment";
 function App() {
+
+  const {isAuthenticated, user} = useAuthContext()
+  const [stripeKey, setStripeKey] = useState("")
+
+  async function getStripeKey() {
+    const {data} = await axios.get("/api/v1/stripeapi")
+    setStripeKey(data.stripeApiKey)
+  }
+
+  useEffect(() => {
+    getStripeKey()
+  }, [])
+
   return (
     <BrowserRouter>
       <div className="App">
@@ -24,6 +45,14 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/login-signup" element={<LoginSignup />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/shipping" element={<AddressForm />} />
+          <Route path="/order/confirm" element={<ConfirmOrder />} />
+          {stripeKey && (
+            <Elements stripe={loadStripe(stripeKey)}>
+              <Route path="/process/payment" element={<Payment />} />
+            </Elements>
+          )}
+
           {/*<Route path="/wishlist" element={<Wishlist/>} />
           <Route path="/orders" element={<Orders/>} />
           <Route path="/profile" element={<Profile/>} />
