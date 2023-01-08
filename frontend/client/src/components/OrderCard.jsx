@@ -6,14 +6,10 @@ import {
     CardContent,
     CardMedia,
     Typography,
-    Button,
-    Rating,
     Divider,
 } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
-import { useProductContext } from "../context/ProductContext";
-import { useAlert } from "react-alert";
 
 const OrderCard = ({ orders }) => {
     const navigate = useNavigate();
