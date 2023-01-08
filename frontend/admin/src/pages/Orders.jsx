@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   GridComponent,
   ColumnsDirective,
@@ -14,17 +14,22 @@ import {
   Inject,
 } from "@syncfusion/ej2-react-grids";
 
-import { ordersData, contextMenuItems, ordersGrid } from "../data/dummy";
+import { ordersGrid } from "../data/dummy";
 
 import { Header } from "../components";
+import { useAuthContext } from "../contexts/AuthContext";
 
 const Orders = () => {
+  const { authState, getOrders } = useAuthContext();
+  useEffect(() => {
+    getOrders()
+  }, [])
   return (
     <div className="m-2 md:m-10 p2 md:p-10 bg-white rounded-3xl">
       <Header title="Orders" category="Page" />
       <GridComponent
         id="gridcomp"
-        dataSource={ordersData}
+        dataSource={authState.orders}
         allowPaging
         allowSorting
       >

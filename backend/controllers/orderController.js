@@ -94,21 +94,21 @@ const allOrders = async (req, res, next) => {
 const updateOrder = async (req, res, next) => {
   const order = await Order.findById(req.params.id);
 
+  if (!order) {
+    return next(new ErrorHander("Order not found with this Id", 404));
+  }
+
   if (order.orderStatus === "Delivered") {
-    return next(new Error("You have already delivered this order", 400));
+    return next(new ErrorHander("You have already delivered this order", 400));
   }
 
-  if (order.orderStatus === "Processing") {
-    return next(new Error("You have already processed this order", 400));
-  }
-
-  if (order.orderStatus === "Shipped") {
-    order.orderItems.forEach(async (item) => {
-      await updateStock(item.product, item.quantity);
+  if (req.body.status === "Shipped") {
+    order.orderItems.forEach(async (o) => {
+      await updateStock(o._id, o.quantity);
     });
   }
-
   order.orderStatus = req.body.status;
+
   if (req.body.status === "Delivered") {
     order.deliveredAt = Date.now();
   }
@@ -117,15 +117,16 @@ const updateOrder = async (req, res, next) => {
   res.status(200).json({
     success: true,
   });
-
-  async function updateStock(id, quantity) {
-    const products = await Product.findById(id);
-
-    products.stock -= quantity;
-
-    await products.save({ validateBeforeSave: false });
-  }
 };
+
+const updateStock = async (id, quantity) => {
+  const product = await Product.findById(id);
+
+  product.stock -= quantity;
+
+  await product.save({ validateBeforeSave: false });
+}
+
 
 // @desc    Delete order
 

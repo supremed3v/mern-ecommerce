@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 
 const AuthContext = createContext();
@@ -8,6 +8,8 @@ const initialState = {
   isAuthenticated: false,
   loading: false,
   error: null,
+  orders: [],
+  orderDetails: [],
 };
 
 export const AuthProvider = ({ children }) => {
@@ -17,7 +19,7 @@ export const AuthProvider = ({ children }) => {
 
   const loadUser = async () => {
     try {
-      const response = await axios.get("http://localhost:3333/api/v1/me");
+      const response = await axios.get("/api/v1/me");
       if (response.data.success) {
         setAuthState({
           ...authState,
@@ -170,6 +172,56 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const getOrders = async () => {
+    setAuthState({
+      ...authState,
+      loading: true,
+    })
+    try {
+      const res = await axios.get('/api/v1/admin/orders')
+      if (res.data.success) {
+        setAuthState({
+          ...authState,
+          orders: res.data.orders,
+          loading: false,
+        })
+      }
+    } catch (error) {
+      error.response.data.message && setAuthState({
+        ...authState,
+        error: error.response.data.message,
+        loading: false,
+      })
+    }
+  }
+
+  const getSingleOrder = async (id) => {
+    setAuthState({
+      ...authState,
+      loading: true,
+    })
+    try {
+      const res = await axios.get(`/api/v1/order/${id}`)
+      if (res.data.success) {
+        setAuthState({
+          ...authState,
+          orderDetails: res.data.order,
+          loading: false,
+        })
+      }
+    } catch (error) {
+      error.response.data.message && setAuthState({
+        ...authState,
+        error: error.response.data.message,
+        loading: false,
+      })
+    }
+  }
+
+  useEffect(()=>{
+    getOrders()
+  },[])
+
   return (
     <AuthContext.Provider
       value={{
@@ -182,6 +234,9 @@ export const AuthProvider = ({ children }) => {
         loadUser,
         loadUserDetails,
         updateUserDetails,
+        getSingleOrder,
+        orderDetails: authState.orderDetails,
+        getOrders
       }}
     >
       {children}

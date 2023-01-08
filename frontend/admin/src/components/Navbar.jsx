@@ -102,7 +102,9 @@ const Navbar = () => {
             <p>
               <span className="text-gray-400 text-14">Hi,</span>{" "}
               <span className="text-gray-400 font-bold ml-1 text-14">
-                {authState.user.name}
+                {
+                  authState.isAuthenticated && authState.user && authState.user.name && authState.user.name !== "" ? authState.user.name : "User"
+                }
               </span>
             </p>
             <MdKeyboardArrowDown className="text-gray-400 text-14" />

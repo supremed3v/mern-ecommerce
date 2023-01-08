@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -16,17 +16,26 @@ import Home from "./Home";
 
 const App = () => {
   const { currentMode } = useStateContext();
-  const { authState } = useAuthContext();
+  const { authState, loadUser } = useAuthContext();
+
+  useEffect(()=>{
+    if(!authState.isAuthenticated){
+      loadUser()
+    }
+  },[])
+
+  
 
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
       <BrowserRouter>
         <Routes>
-          {authState.isAuthenticated && authState.user.role === "admin" ? (
-            <Route exact path="*" element={<Home />} />
+          {authState.isAuthenticated ? (
+            <Route path="*" element={<Home />} />
           ) : (
-            <Route path="*" element={<Login />} />
+            <Route path="/" element={<Login />} />
           )}
+          
         </Routes>
       </BrowserRouter>
     </div>

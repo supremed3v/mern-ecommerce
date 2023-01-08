@@ -27,6 +27,7 @@ import "./App.css";
 import { useStateContext } from "./contexts/ContextProvider";
 import ProductsList from "./pages/ProductsList";
 import UpdateProduct from "./pages/UpdateProduct";
+import OrderDetails from "./pages/OrderDetails";
 
 const Home = () => {
   const {
@@ -75,6 +76,7 @@ const Home = () => {
 
             {/* Pages */}
             <Route path="/orders" element={<Orders />} />
+            <Route path="/order/:id" element={<OrderDetails />} />
             <Route path="/employees" element={<Employees />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/products" element={<ProductsList />} />

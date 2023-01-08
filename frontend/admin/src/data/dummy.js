@@ -22,6 +22,8 @@ import {
   BsCurrencyDollar,
   BsShield,
   BsChatLeft,
+  BsPencilSquare,
+  BsTrash,
 } from "react-icons/bs";
 import { BiColorFill } from "react-icons/bi";
 import { IoMdContacts } from "react-icons/io";
@@ -44,12 +46,13 @@ import product5 from "./product5.jpg";
 import product6 from "./product6.jpg";
 import product7 from "./product7.jpg";
 import product8 from "./product8.jpg";
+import { Link } from "react-router-dom";
 
 export const gridOrderImage = (props) => (
   <div>
     <img
       className="rounded-xl h-20 md:ml-3"
-      src={props.ProductImage}
+      src={props.orderItems[0].images[0].url}
       alt="order-item"
     />
   </div>
@@ -72,13 +75,23 @@ export const gridProductRating = (props) => (
   </div>
 );
 
+const orderStatusStyle = (props) => {
+  if (props.orderStatus === "Processing") {
+    return "#FBBF24";
+  } else if (props.orderStatus === "Delivered") {
+    return "#10B981";
+  } else if (props.orderStatus === "Shipped") {
+    return "#2563EB";
+  }
+}
+
 export const gridOrderStatus = (props) => (
   <button
     type="button"
-    style={{ background: props.StatusBg }}
+    style={{ backgroundColor: orderStatusStyle(props) }}
     className="text-white py-1 px-2 capitalize rounded-2xl text-md"
   >
-    {props.Status}
+    {props.orderStatus}
   </button>
 );
 
@@ -555,7 +568,7 @@ export const links = [
       },
       {
         name: "products",
-        icon: <GrAddCircle />,
+        icon: <FiShoppingBag />,
       },
     ],
   },
@@ -916,6 +929,24 @@ export const userProfileData = [
   },
 ];
 
+const orderItemsNames = (props) =>{
+  return props.orderItems.map((item) => item.name + ", ")
+}
+
+const gridOrderAction = (props) => {
+  const { _id } = props;
+  return (
+    <div>
+      <Link className="bg-blue-500 text-white px-2 py-1 rounded-md" to={`/order/${_id}`}>
+        Edit
+      </Link>
+      <button className="ml-2 bg-red-500 text-white px-2 py-1 rounded-md">
+        <BsTrash />
+      </button>
+    </div>
+  );
+}
+
 export const ordersGrid = [
   {
     headerText: "Image",
@@ -924,20 +955,21 @@ export const ordersGrid = [
     width: "120",
   },
   {
-    field: "OrderItems",
-    headerText: "Item",
+    headerText: "Item Names",
+    template: orderItemsNames,
     width: "150",
     editType: "dropdownedit",
     textAlign: "Center",
   },
   {
-    field: "CustomerName",
-    headerText: "Customer Name",
+    field: "orderItems.length",
+    headerText: "Items",
     width: "150",
+    editType: "dropdownedit",
     textAlign: "Center",
   },
   {
-    field: "TotalAmount",
+    field: "itemsPrice",
     headerText: "Total Amount",
     format: "C2",
     textAlign: "Center",
@@ -952,19 +984,27 @@ export const ordersGrid = [
     width: "120",
   },
   {
-    field: "OrderID",
-    headerText: "Order ID",
+    field: "user",
+    headerText: "Customer ID",
     width: "120",
     textAlign: "Center",
   },
 
   {
-    field: "Location",
+    field: "shippingInfo.country",
     headerText: "Location",
     width: "150",
     textAlign: "Center",
   },
+  {
+    template: gridOrderAction,
+    headerText: "Action",
+    textAlign: "Center",
+    width: "120",
+  }
 ];
+
+
 
 export const productsGrid = [
   {
