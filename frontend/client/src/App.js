@@ -13,15 +13,21 @@ import { useAuthContext } from "./context/AuthContext";
 import { useEffect } from "react";
 import Payment from "./components/Payment";
 import Profile from "./pages/Profile";
+import Orders from "./pages/Orders";
+import OrderDetails from "./pages/OrderDetails";
 function App() {
 
-  const {loadUser} = useAuthContext()
+  const {loadUser, authState, getUserOrder} = useAuthContext()
 
   
 
   useEffect(() => {
     loadUser()
-  }, [])
+    if(authState.isAuthenticated){
+      getUserOrder()
+    }
+  }, [authState.isAuthenticated])
+
 
 
   return (
@@ -44,8 +50,9 @@ function App() {
           <Route path="/profile" element={<Profile/>} />
           
 
-          {/*<Route path="/wishlist" element={<Wishlist/>} />
           <Route path="/orders" element={<Orders/>} />
+          <Route path="/order/:id" element={<OrderDetails/>} />
+          {/*<Route path="/wishlist" element={<Wishlist/>} />
           <Route path="/address" element={<Address/>} />
           <Route path="/payment" element={<Payment/>} />
           <Route path="/order-success" element={<OrderSuccess/>} />

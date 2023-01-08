@@ -18,6 +18,11 @@ const Profile = () => {
     myForm.set("name", name);
     myForm.set("email", email);
     updateProfile(myForm)
+    if (authState.error) {
+      alert.error(authState.error)
+    } else {
+      alert.success("Password updated successfully")
+    }
   }
 
   const handleUpdatePassword = () => {
@@ -27,8 +32,16 @@ const Profile = () => {
     );
     myForm.set("confirmPassword", confirmPassword);
     updatePassword(myForm)
+    if (authState.error) {
+      alert.error(authState.error)
+    } else {
+      alert.success("Password updated successfully")
+    }
 
   }
+
+  if (authState.loading) return <Typography>Loading...</Typography>
+
   return (
     <Box sx={{
       width: "100%",

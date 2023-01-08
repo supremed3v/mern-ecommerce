@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
 
@@ -8,6 +8,7 @@ const initialState = {
   user: null,
   loading: false,
   error: false,
+  userOrders: [],
 };
 
 export const AuthContextProvider = ({ children }) => {
@@ -121,9 +122,27 @@ export const AuthContextProvider = ({ children }) => {
     }
   }
 
+  const getUserOrder = async () => {
+    try {
+      const res = await axios.get(`/api/v1/orders/me`);
+      setAuthState({
+        ...authState,
+        userOrders: res.data.orders,
+        loading: false,
+        error: false,
+      });
+    } catch (error) {
+      setAuthState({
+        ...authState,
+        loading: false,
+        error: error.response.data.message,
+      });
+    }
+  }
+
   return (
     <AuthContext.Provider
-      value={{ authState, login, logout, register, loadUser, updateProfile, updatePassword }}
+      value={{ authState, login, logout, register, loadUser, updateProfile, updatePassword, getUserOrder, userOrders: authState.userOrders }}
     >
       {children}
     </AuthContext.Provider>
