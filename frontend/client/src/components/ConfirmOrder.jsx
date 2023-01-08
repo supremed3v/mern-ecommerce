@@ -1,16 +1,20 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
 import { useProductContext } from "../context/ProductContext";
-import {useAuthContext} from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import Checkout from "../pages/Checkout";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 
 export default function ConfirmOrder() {
-  const {authState} = useAuthContext();
   const navigate = useNavigate();
-  const {shippingInfo, totalPrice, cart} = useProductContext();
+  const { shippingInfo, totalPrice, cart } = useProductContext();
 
   const shippingCharges = totalPrice > 500 ? 0 : 50;
 
@@ -33,52 +37,89 @@ export default function ConfirmOrder() {
 
   return (
     <React.Fragment>
-      <Checkout activeStep={1} />
-      <Typography variant="h6" gutterBottom>
-        Payment method
+      <Box sx={{
+        mt: "50px",
+      }}>
+
+        <Checkout activeStep={1} />
+      </Box>
+      <Typography variant="h4" gutterBottom sx={{
+        textAlign: "center",
+        marginTop: "50px",
+      }} >
+        Order summary
       </Typography>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <Typography>Name:</Typography>
-          <Typography>{authState.user.name}</Typography>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Typography>Phone:</Typography>
-          <Typography>{shippingInfo.phoneNo}</Typography>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Typography>Address:</Typography>
-          <Typography>{address}</Typography>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Typography>Your Cart Items:</Typography>
-          {cart && cart.map((item) => (
-            <Typography key={item._id}>{item.name} x {item.quantity}</Typography>
-          ))}
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Typography>Order Summary:</Typography>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Typography>Total Price:</Typography>
-          <Typography>{totalPrice}</Typography>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Typography>Shipping Charges:</Typography>
-          <Typography>{shippingCharges}</Typography>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Typography>Tax:</Typography>
-          <Typography>{tax}</Typography>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Typography>Total:</Typography>
-          <Typography>{total}</Typography>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Button variant="contained" color="primary" onClick={proceedToPayment}>Proceed to Payment</Button>
-        </Grid>
-      </Grid>
+      <TableContainer component={Paper} sx={{
+        width: "80%",
+        margin: "auto",
+      }}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Product</TableCell>
+              <TableCell align="center">Description</TableCell>
+              <TableCell align="center">Image</TableCell>
+              <TableCell align="center">Price</TableCell>
+              <TableCell align="center">Quantity</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {cart.map((item) => (
+              <TableRow
+                key={item._id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {item.name}
+                </TableCell>
+                <TableCell align="center">{item.description}</TableCell>
+                <TableCell align="center">
+                  <img
+                    src={item.images[0].url}
+                    alt={item.name}
+                    style={{ width: "50px", height: "50px" }}
+                  />
+                </TableCell>
+                <TableCell align="center">${item.price}/=</TableCell>
+                <TableCell align="center">{item.quantity}</TableCell>
+              </TableRow>
+            ))}
+            <TableHead>
+              <TableRow>
+                <TableCell>Shipping Address</TableCell>
+                <TableCell align="left">{address}</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableRow>
+              <TableCell>Shipping Charges</TableCell>
+              <TableCell align="left">${shippingCharges}/=</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell rowSpan={3} />
+              <TableCell colSpan={2}>Subtotal</TableCell>
+              <TableCell align="right">${totalPrice}/=</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell colSpan={2} >Tax</TableCell>
+              <TableCell align="right">${tax}/=</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell colSpan={2}>Total</TableCell>
+              <TableCell align="right">${total}/=</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell colSpan={4} align="right">
+                <Button variant="contained" color="primary" sx={{
+                  marginTop: "20px",
+                  marginBottom: "20px",
+                }} onClick={proceedToPayment}>
+                  Proceed to Payment
+                </Button>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
     </React.Fragment>
   );
 }

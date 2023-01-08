@@ -1,11 +1,7 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import Grid from "@mui/material/Grid";
 import { useProductContext } from "../context/ProductContext";
-import {CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements, Elements} from '@stripe/react-stripe-js';
+import { CardElement, useStripe, useElements, Elements } from '@stripe/react-stripe-js';
 
 
 import { useAlert } from "react-alert";
@@ -13,19 +9,37 @@ import { useAlert } from "react-alert";
 import axios from "axios";
 import { useAuthContext } from "../context/AuthContext";
 import Checkout from "../pages/Checkout";
-import { Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { loadStripe } from "@stripe/stripe-js";
 
 function FormFunction() {
   const alert = useAlert();
   const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
+  const cardStyle = {
+    style: {
+      base: {
+        color: "#32325d",
+        fontFamily: 'Arial, sans-serif',
+        fontSmoothing: "antialiased",
+        fontSize: "16px",
+        "::placeholder": {
+          color: "#32325d"
+        }
+      },
+      invalid: {
+        fontFamily: 'Arial, sans-serif',
+        color: "#fa755a",
+        iconColor: "#fa755a"
+      }
+    }
+  };
 
   const stripe = useStripe();
   const elements = useElements();
   const payBtn = React.useRef(null)
 
-  const {cart, shippingInfo, createOrder} = useProductContext();
-  const {authState} = useAuthContext();
+  const { cart, shippingInfo, createOrder, } = useProductContext();
+  const { authState } = useAuthContext();
   console.log(authState.user.name)
 
   const paymentData = {
@@ -41,13 +55,14 @@ function FormFunction() {
     totalPrice: orderInfo.totalPrice,
   }
 
+
   const submitHandler = async (e) => {
     e.preventDefault();
 
     payBtn.current.disabled = true;
 
     try {
-      const {data} = await axios.post("/api/v1/payment/process", paymentData, {
+      const { data } = await axios.post("/api/v1/payment/process", paymentData, {
         headers: {
           "Content-Type": "application/json",
         }
@@ -55,15 +70,15 @@ function FormFunction() {
 
       const clientSecret = data.client_secret;
 
-      if(!stripe || !elements) return;
+      if (!stripe || !elements) return;
 
-      const result = await stripe.confirmCardPayment(clientSecret,{
+      const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
-          card: elements.getElement(CardNumberElement),
+          card: elements.getElement(CardElement),
           billing_details: {
             name: authState.user.name,
             email: authState.user.email,
-            address:{
+            address: {
               line1: shippingInfo.address,
               city: shippingInfo.city,
               state: shippingInfo.state,
@@ -73,67 +88,78 @@ function FormFunction() {
           }
         }
       })
-      if(result.error){
+      if (result.error) {
         payBtn.current.disabled = false;
         alert.error(result.error.message);
       } else {
-        if(result.paymentIntent.status === "succeeded"){
-          order.paymentInfo ={
+        if (result.paymentIntent.status === "succeeded") {
+          order.paymentInfo = {
             id: result.paymentIntent.id,
             status: result.paymentIntent.status
           }
           createOrder(order);
           alert.success("Your order has been placed successfully");
+          sessionStorage.removeItem("cartItems");
+          sessionStorage.removeItem("orderInfo");
+          sessionStorage.removeItem("shippingInfo");
+          localStorage.removeItem("cartItems");
+
 
         }
       }
 
     } catch (error) {
       payBtn.current.disabled = false;
-      console.log(error);
+      alert.error(error.response.data.message);
     }
   }
 
   return (
     <React.Fragment>
-      <Typography variant="h6" gutterBottom>
-        Order summary
-      </Typography>
-      <Checkout activeStep={2} />
+      <Box sx={{
+        mt: 3,
+        mb: 2,
+      }}>
+
+        <Checkout activeStep={2} />
+      </Box>
       <div>
-        <Typography variant="h6" gutterBottom>
+        <Typography variant="h4" gutterBottom sx={{
+          textAlign: "center",
+          fontWeight: "bold",
+          color: "#3f51b5",
+          marginTop: "1rem",
+          marginBottom: "1rem"
+        }}>
           Card Info
         </Typography>
       </div>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <CardNumberElement />
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <CardExpiryElement />
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <CardCvcElement />
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <Button
-          variant="contained"
-          color="primary"
+      <div id="payment-form" className="form">
+        <CardElement id="card-element" options={cardStyle} />
+        <button
           onClick={submitHandler}
           ref={payBtn}
+          className="button"
         >
-          Pay
-        </Button>
-      </Grid>
-      </Grid>
-      
+          Pay Now
+        </button>
+      </div>
+
     </React.Fragment>
   );
 }
 
-export default function Payment () {
+export default function Payment() {
+  const appearance = {
+    theme: "stripe"
+  }
+  const options = {
+    appearance,
+  }
   return (
-    <Elements stripe={loadStripe(process.env.REACT_APP_STRIPE_API_KEY)}>
+    <Elements stripe={loadStripe(`${process.env.REACT_APP_STRIPE_API_KEY}`)}
+      options={options}
+    >
       <FormFunction />
     </Elements>
   );

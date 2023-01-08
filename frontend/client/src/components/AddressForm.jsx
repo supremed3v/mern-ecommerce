@@ -38,10 +38,16 @@ export default function AddressForm() {
   return (
     <React.Fragment>
       {/* <Checkout activeStep={0} /> */}
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h3" gutterBottom textAlign={"center"} sx={{
+        marginTop: "2rem",
+      }}>
         Shipping address
       </Typography>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} sx={{
+        width: "60%",
+        margin: "auto",
+        marginTop: "2rem",
+      }}>
         <Grid item xs={12}>
           <TextField
             required
@@ -128,11 +134,19 @@ export default function AddressForm() {
           />
         </Grid>
       </Grid>
-      <Button variant="contained" color="primary" sx={{ mt: 3, mb: 2 }} 
-      onClick={handleFormSubmit}
-      >
-        Next
-      </Button>
+      <Box sx={{
+        margin: "auto",
+        display: "flex",
+        justifyContent: "center",
+
+      }}>
+        <Button variant="contained" color="primary" sx={{ mt: 3, mb: 2, mr: 2 }}
+          onClick={handleFormSubmit}
+        >
+          Next
+        </Button>
+      </Box>
+
     </React.Fragment>
   );
 }

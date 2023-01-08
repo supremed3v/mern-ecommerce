@@ -39,7 +39,11 @@ const Cart = () => {
           </Typography>
         </Box>
       ) : (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{
+          width: "80%",
+          margin: "0 auto",
+          marginTop: "50px",
+        }}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -57,7 +61,7 @@ const Cart = () => {
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    {item.name}
+                    <Typography variant="h6">{item.name}</Typography>
                   </TableCell>
                   <TableCell align="center">
                     {item.description.substring(0, 30)}...
@@ -69,7 +73,9 @@ const Cart = () => {
                       style={{ width: "100px" }}
                     />
                   </TableCell>
-                  <TableCell align="center">{item.price}</TableCell>
+                  <TableCell align="center">
+                    <Typography variant="h6">${item.price}</Typography>
+                  </TableCell>
                   <TableCell align="center">
                     <Button
                       variant="contained"
@@ -78,7 +84,9 @@ const Cart = () => {
                     >
                       -
                     </Button>
-                    <span style={{ margin: "0 10px" }}>{item.quantity}</span>
+                    <span style={{ margin: "0 10px" }}>
+                      {item.quantity}
+                    </span>
                     <Button
                       variant="contained"
                       color="primary"
@@ -98,6 +106,22 @@ const Cart = () => {
                   <Typography variant="h6">${totalPrice}/=</Typography>
                 </TableCell>
               </TableRow>
+              <TableRow>
+                <TableCell colSpan={2} align="right">
+                  <Button variant="contained" color="primary" onClick={() => {
+                    if (authState.isAuthenticated === false) {
+                      alert.show("Please login to checkout");
+                      setTimeout(() => {
+                        navigate("/login-signup");
+                      }, 1000);
+                    } else {
+                      navigate("/checkout");
+                    }
+                  }} >
+                    Checkout
+                  </Button>
+                </TableCell>
+              </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
@@ -110,22 +134,7 @@ const Cart = () => {
           mr: 10,
         }}
       >
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            if (authState.isAuthenticated === false) {
-              alert.show("Please login to checkout");
-              setTimeout(() => {
-                navigate("/login-signup");
-              }, 1000);
-            } else {
-              navigate("/checkout");
-            }
-          }}
-        >
-          Checkout
-        </Button>
+
       </Box>
     </div>
   );

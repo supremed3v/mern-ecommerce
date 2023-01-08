@@ -10,29 +10,17 @@ import LoginSignup from "./pages/LoginSignup";
 import AddressForm from "./components/AddressForm";
 import ConfirmOrder from "./components/ConfirmOrder";
 import { useAuthContext } from "./context/AuthContext";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+import { useEffect } from "react";
 import Payment from "./components/Payment";
 function App() {
 
-  const {isAuthenticated, user, loadUser, authState} = useAuthContext()
-  const [stripeKey, setStripeKey] = useState("")
+  const {loadUser} = useAuthContext()
 
-  async function getStripeKey() {
-    try {
-      const {data} = await axios.get("/api/v1/stripeapi")
-      setStripeKey(data.stripeApiKey)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  
 
   useEffect(() => {
     loadUser()
-      getStripeKey()
-  }, [isAuthenticated, user])
+  }, [])
 
 
   return (

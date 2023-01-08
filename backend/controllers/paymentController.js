@@ -1,6 +1,8 @@
 import Stripe from "stripe";
+const stripeapi = process.env.STRIPE_API_KEY;
 
-const stripe = new Stripe(`${process.env.STRIPE_API_SECRET}`);
+
+const stripe = new Stripe(stripeapi);
 
 export const processPayment = async (req, res) => {
   const myPayment = await stripe.paymentIntents.create({
@@ -9,7 +11,8 @@ export const processPayment = async (req, res) => {
     metadata: {
       company: "Ecommerce",
     },
-  });
+  },
+  );
 
   res.status(200).json({
     success: true,

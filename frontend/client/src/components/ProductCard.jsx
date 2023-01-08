@@ -8,6 +8,7 @@ import {
   Typography,
   Button,
   Rating,
+  Divider,
 } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
@@ -35,15 +36,16 @@ const ProductCard = ({ products }) => {
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
+          gridTemplateColumns: "repeat(4, 1fr)",
           gap: 3,
           my: 6,
-          mx: 2,
+          mx: 15,
+
         }}
       >
         {products &&
           products.map((product) => (
-            <Card sx={{ maxWidth: 345 }} key={product._id}>
+            <Card sx={{ maxWidth: 300, mb: 4 }} key={product._id}>
               <CardActionArea
                 onClick={() => {
                   navigate(`/product/${product._id}`);
@@ -54,19 +56,23 @@ const ProductCard = ({ products }) => {
                   height="140"
                   image={product.images[0].url}
                   alt={product.name}
+                  sx={{ objectFit: "cover" }}
                 />
                 <CardContent>
+                  <Divider/>
                   <Typography gutterBottom variant="h5" component="div">
                     {product.name}
                   </Typography>
+                  <Divider/>
                   <Typography variant="body2" color="text.secondary">
-                    {product.description}
+                    {`${product.description.slice(0, 70)}...`}
                   </Typography>
+                  <Divider/>
                   <Typography variant="h6" color="text.secondary">
                     ${product.price}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {product.countInStock} in stock
+                    {product.stock} in stock
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     {product.numReviews} reviews
