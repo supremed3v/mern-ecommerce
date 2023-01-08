@@ -2,7 +2,7 @@ import Stripe from "stripe";
 const stripeapi = process.env.STRIPE_API_KEY;
 
 
-const stripe = new Stripe(stripeapi);
+const stripe = new Stripe("pk_test_51MN6DEJ67mRk3irn38cJvKSRLCJsch8TNbqeCylQXToUPcxUV0pir2QcAiLvwivyhk0Fuc2lXYNyX5bZIdFz3lzU00kCwLthti");
 
 export const processPayment = async (req, res) => {
   const myPayment = await stripe.paymentIntents.create({

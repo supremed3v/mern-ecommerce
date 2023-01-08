@@ -38,7 +38,20 @@ const pages = [
     link: "/contact",
   },
 ];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = [
+  {
+    name: "Profile",
+    link: "/profile",
+  },
+  {
+    name: "Orders",
+    link: "/orders",
+  },
+  {
+    name: "Logout",
+    link: "/logout",
+  },
+];
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -168,10 +181,10 @@ function Navbar() {
                     isActive
                       ? activeStyle
                       : {
-                          color: "white",
-                          textDecoration: "none",
-                          fontWeight: "bold",
-                        }
+                        color: "white",
+                        textDecoration: "none",
+                        fontWeight: "bold",
+                      }
                   }
                 >
                   {page.name}
@@ -208,9 +221,9 @@ function Navbar() {
                   <Badge badgeContent={cart.length} color="error">
                     <ShoppingCartIcon sx={{ color: "white" }} />
                   </Badge>
-                ): (
+                ) : (
                   <ShoppingCartIcon sx={{ color: "white" }} />
-                  
+
                 )}
               </Box>
             </IconButton>
@@ -232,12 +245,19 @@ function Navbar() {
             >
               {settings.map((setting) => (
                 <MenuItem
-                  key={setting}
+                  key={setting.name}
                   onClick={
-                    setting === "Logout" ? handleLogout : handleCloseUserMenu
+                    setting.name === "Logout" ? handleLogout : handleCloseUserMenu
                   }
                 >
-                  <Typography textAlign="center">{setting}</Typography>
+                  <Link to={setting.link}
+                    style={{
+                      color: "black",
+                      textDecoration: "none",
+                      fontWeight: "bold",
+
+                    }}
+                  >{setting.name}</Link>
                 </MenuItem>
               ))}
             </Menu>

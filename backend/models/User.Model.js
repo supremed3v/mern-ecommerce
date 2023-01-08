@@ -60,8 +60,8 @@ UserSchema.pre("save", async function (next) {
 });
 
 // Compare user password
-UserSchema.methods.comparePassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+UserSchema.methods.comparePassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
 };
 
 // Return JWT token

@@ -12,6 +12,7 @@ import ConfirmOrder from "./components/ConfirmOrder";
 import { useAuthContext } from "./context/AuthContext";
 import { useEffect } from "react";
 import Payment from "./components/Payment";
+import Profile from "./pages/Profile";
 function App() {
 
   const {loadUser} = useAuthContext()
@@ -40,11 +41,11 @@ function App() {
           <Route path="/checkout" element={<AddressForm/>} />
           <Route path="/order/confirm" element={<ConfirmOrder />} />
           <Route path="/process/payment" element={<Payment/>} />
+          <Route path="/profile" element={<Profile/>} />
           
 
           {/*<Route path="/wishlist" element={<Wishlist/>} />
           <Route path="/orders" element={<Orders/>} />
-          <Route path="/profile" element={<Profile/>} />
           <Route path="/address" element={<Address/>} />
           <Route path="/payment" element={<Payment/>} />
           <Route path="/order-success" element={<OrderSuccess/>} />

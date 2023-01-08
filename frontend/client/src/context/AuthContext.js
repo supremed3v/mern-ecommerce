@@ -76,9 +76,54 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
+  const updateProfile = async (userCredentials) => {
+
+    setAuthState({ ...authState, loading: true, error: false });
+    try {
+      const res = await axios.put(`/api/v1/me/update`, userCredentials);
+
+      loadUser()
+      setAuthState({
+        ...authState,
+        user: res.data.user,
+        loading: false,
+        error: false,
+        isAuthenticated: true,
+      });
+    } catch (error) {
+      setAuthState({
+        ...authState,
+        loading: false,
+        error: error.response.data.message,
+      });
+    }
+  }
+
+  const updatePassword = async (userCredentials) => {
+    setAuthState({ ...authState, loading: true, error: false });
+    try {
+      const res = await axios.put(`/api/v1/password/update`, userCredentials);
+      loadUser()
+      setAuthState({
+        ...authState,
+        user: res.data.user,
+        loading: false,
+        error: false,
+        isAuthenticated: true,
+      });
+    } catch (error) {
+      setAuthState({
+        ...authState,
+        loading: false,
+        error: error.response.data.message,
+      });
+      console.log(error)
+    }
+  }
+
   return (
     <AuthContext.Provider
-      value={{ authState, login, logout, register, loadUser }}
+      value={{ authState, login, logout, register, loadUser, updateProfile, updatePassword }}
     >
       {children}
     </AuthContext.Provider>

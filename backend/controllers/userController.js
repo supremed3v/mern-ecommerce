@@ -202,7 +202,7 @@ export const getUserDetails = async (req, res, next) => {
 
 export const updatePassword = async (req, res, next) => {
   const user = await User.findById(req.user.id).select("+password");
-  const isMatch = await user.comparePassword(req.body.currentPassword);
+  const isMatch = await user.comparePassword(req.body.oldPassword);
   if (!isMatch) {
     return res.status(400).json({
       success: false,
@@ -226,8 +226,6 @@ export const updateProfile = async (req, res, next) => {
   const newUserData = {
     name: req.body.name,
     email: req.body.email,
-    address: req.body.address,
-    mobile: req.body.mobile,
   };
 
   // Update profilePicture: TODO
