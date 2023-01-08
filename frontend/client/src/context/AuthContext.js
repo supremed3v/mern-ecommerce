@@ -9,6 +9,7 @@ const initialState = {
   loading: false,
   error: false,
   userOrders: [],
+  orderDetails:{}
 };
 
 export const AuthContextProvider = ({ children }) => {
@@ -140,9 +141,27 @@ export const AuthContextProvider = ({ children }) => {
     }
   }
 
+  const getOrderDetails = async (id) => {
+    try {
+      const res = await axios.get(`/api/v1/order/${id}`);
+      setAuthState({
+        ...authState,
+        orderDetails: res.data.order,
+        loading: false,
+        error: false,
+      });
+    } catch (error) {
+      setAuthState({
+        ...authState,
+        loading: false,
+        error: error.response.data.message,
+      });
+    }
+  }
+
   return (
     <AuthContext.Provider
-      value={{ authState, login, logout, register, loadUser, updateProfile, updatePassword, getUserOrder, userOrders: authState.userOrders }}
+      value={{ authState, login, logout, register, loadUser, updateProfile, updatePassword, getUserOrder, userOrders: authState.userOrders, getOrderDetails, orderDetails: authState.orderDetails }}
     >
       {children}
     </AuthContext.Provider>
