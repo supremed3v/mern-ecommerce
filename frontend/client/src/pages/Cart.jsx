@@ -15,7 +15,7 @@ import Paper from "@mui/material/Paper";
 import { useAlert } from "react-alert";
 const Cart = () => {
   const navigate = useNavigate();
-  const { addQuantity, reduceQuantity, totalPrice } = useProductContext();
+  const { addQuantity, reduceQuantity, totalPrice, removeProductFromCart } = useProductContext();
   const { authState } = useAuthContext();
   const alert = useAlert();
   const cart = JSON.parse(localStorage.getItem("cart"));
@@ -93,6 +93,11 @@ const Cart = () => {
                       onClick={() => addQuantity(item._id)}
                     >
                       +
+                    </Button>
+                    <Button variant="contained" color="error"
+                      onClick={() => removeProductFromCart(item._id)}
+                    >
+                      Remove
                     </Button>
                   </TableCell>
                 </TableRow>

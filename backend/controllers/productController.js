@@ -108,19 +108,19 @@ export const updateProduct = async (req, res, next) => {
   }
 
   const imageLinks = [];
+  if (images !== null && images !== undefined && images !== "") {
+    for (let i = 0; i < images.length; i++) {
+      const result = await cloudinary.v2.uploader.upload(images[i], {
+        folder: "products",
+      });
+      imageLinks.push({
+        public_id: result.public_id,
+        url: result.secure_url,
+      });
 
-  for (let i = 0; i < images.length; i++) {
-    const result = await cloudinary.v2.uploader.upload(images[i], {
-      folder: "products",
-    });
-    imageLinks.push({
-      public_id: result.public_id,
-      url: result.secure_url,
-    });
-
-    req.body.images = imageLinks;
+      req.body.images = imageLinks;
+    }
   }
-
   product = await Product.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
@@ -176,15 +176,13 @@ export const createProductReview = async (req, res, next) => {
 
   // Check if the user has already reviewed the product
   const isReviewed = product.reviews.find(
-    (rev) => rev.user.toString() === req.user._id.toString()
+    (rev) => rev.user.toString() === req.user.id.toString()
   );
 
   if (isReviewed) {
     product.reviews.forEach((rev) => {
-      if (rev.user.toString() === req.user._id.toString()) {
-        rev.comment = comment;
-        rev.rating = rating;
-      }
+      if (rev.user.toString() === req.user.id.toString())
+        (rev.rating = rating), (rev.comment = comment);
     });
   } else {
     product.reviews.push(review);

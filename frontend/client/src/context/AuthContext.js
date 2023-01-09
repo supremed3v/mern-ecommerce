@@ -9,8 +9,8 @@ const initialState = {
   loading: false,
   error: false,
   userOrders: [],
-  orderDetails:{},
-  successMessage: null
+  orderDetails: {},
+  successMessage: null,
 };
 
 export const AuthContextProvider = ({ children }) => {
@@ -22,7 +22,7 @@ export const AuthContextProvider = ({ children }) => {
       const res = await axios.post("/api/v1/login", userCredentials);
       setAuthState({
         ...authState,
-        user: res.data,
+        user: res.data.user,
         loading: false,
         error: false,
         isAuthenticated: true,
@@ -38,7 +38,15 @@ export const AuthContextProvider = ({ children }) => {
 
   const logout = () => {
     axios.get("/api/v1/logout");
-    setAuthState(initialState);
+    setAuthState({
+      isAuthenticated: false,
+      user: null,
+      loading: false,
+      error: false,
+      userOrders: [],
+      orderDetails: {},
+      successMessage: null,
+    });
   };
 
   const loadUser = async () => {
@@ -65,7 +73,7 @@ export const AuthContextProvider = ({ children }) => {
       const res = await axios.post("/api/v1/register", userCredentials);
       setAuthState({
         ...authState,
-        user: res.data,
+        user: res.data.user,
         loading: false,
         error: false,
         isAuthenticated: true,
@@ -80,12 +88,11 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   const updateProfile = async (userCredentials) => {
-
     setAuthState({ ...authState, loading: true, error: false });
     try {
       const res = await axios.put(`/api/v1/me/update`, userCredentials);
 
-      loadUser()
+      loadUser();
       setAuthState({
         ...authState,
         user: res.data.user,
@@ -100,13 +107,13 @@ export const AuthContextProvider = ({ children }) => {
         error: error.response.data.message,
       });
     }
-  }
+  };
 
   const updatePassword = async (userCredentials) => {
     setAuthState({ ...authState, loading: true, error: false });
     try {
       const res = await axios.put(`/api/v1/password/update`, userCredentials);
-      loadUser()
+      loadUser();
       setAuthState({
         ...authState,
         user: res.data.user,
@@ -120,9 +127,9 @@ export const AuthContextProvider = ({ children }) => {
         loading: false,
         error: error.response.data.message,
       });
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const getUserOrder = async () => {
     try {
@@ -140,7 +147,7 @@ export const AuthContextProvider = ({ children }) => {
         error: error.response.data.message,
       });
     }
-  }
+  };
 
   const getOrderDetails = async (id) => {
     try {
@@ -158,21 +165,21 @@ export const AuthContextProvider = ({ children }) => {
         error: error.response.data.message,
       });
     }
-  }
+  };
 
   const newReview = async (data) => {
     setAuthState({
       ...authState,
-      loading: true
-    })
+      loading: true,
+    });
     try {
-      const res = await axios.put('/api/v1/review', data)
+      const res = await axios.put("/api/v1/review", data);
       setAuthState({
         ...authState,
         loading: false,
         error: false,
-        successMessage: res.data.success
-      })
+        successMessage: res.data.success,
+      });
     } catch (error) {
       setAuthState({
         ...authState,
@@ -180,11 +187,24 @@ export const AuthContextProvider = ({ children }) => {
         error: error.response.data.message,
       });
     }
-  }
+  };
 
   return (
     <AuthContext.Provider
-      value={{ authState, login, logout, register, loadUser, updateProfile, updatePassword, getUserOrder, userOrders: authState.userOrders, getOrderDetails, orderDetails: authState.orderDetails, newReview }}
+      value={{
+        authState,
+        login,
+        logout,
+        register,
+        loadUser,
+        updateProfile,
+        updatePassword,
+        getUserOrder,
+        userOrders: authState.userOrders,
+        getOrderDetails,
+        orderDetails: authState.orderDetails,
+        newReview,
+      }}
     >
       {children}
     </AuthContext.Provider>

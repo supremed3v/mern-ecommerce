@@ -14,38 +14,70 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, redirect } from "react-router-dom";
+import { useAlert } from "react-alert";
 
 export default function LoginSignup() {
   const navigate = useNavigate();
-  const { signup, login, authState } = useAuthContext();
+  const { register, login, authState, } = useAuthContext();
   const [value, setValue] = useState(0);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = { email, password };
-    if (value === 0) {
-      signup(data);
+    if (value === 1) {
+      const myForm = new FormData()
+      myForm.set('email', email)
+      myForm.set('password', password)
+      login(myForm)
     } else {
-      if (authState.error) {
-        console.log(authState.error);
-      } else {
-        login(data);
-        navigate("/");
-      }
+      const myForm = new FormData()
+      myForm.set('name', name)
+      myForm.set('email', email)
+      myForm.set('password', password)
+      register(myForm)
+
     }
-  };
+  }
+
+
+  useEffect(() => {
+    if (authState.error) {
+      alert(authState.error)
+    }
+
+    if (authState.isAuthenticated) {
+      window.location.href = "/"
+    }
+  }, [authState.isAuthenticated, authState.error])
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  const handleSignup = () => {
+    const myForm = new FormData()
+
+    myForm.set('name', name)
+    myForm.set('email', email)
+    myForm.set('password', password)
+    console.log(email, password, name)
+    register(myForm)
+    if (authState.error) {
+      console.log(authState.error)
+    }
+
+    if (authState.isAuthenticated) {
+      navigate("/")
+    }
+  }
+  if (authState.loading) return <h1>Loading...</h1>
+
   return (
     <Container component="main" maxWidth="xs">
-      {authState.loading && <h1>Loading...</h1>}
       <TabContext value={value}>
         <TabList
           onChange={handleChange}
@@ -83,25 +115,17 @@ export default function LoginSignup() {
               sx={{ mt: 3 }}
             >
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12}>
                   <TextField
                     autoComplete="given-name"
                     name="firstName"
                     required
                     fullWidth
                     id="firstName"
-                    label="First Name"
+                    label="Name"
                     autoFocus
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="lastName"
-                    label="Last Name"
-                    name="lastName"
-                    autoComplete="family-name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -112,6 +136,8 @@ export default function LoginSignup() {
                     label="Email Address"
                     name="email"
                     autoComplete="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -123,14 +149,8 @@ export default function LoginSignup() {
                     type="password"
                     id="password"
                     autoComplete="new-password"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox value="allowExtraEmails" color="primary" />
-                    }
-                    label="I want to receive inspiration, marketing promotions and updates via email."
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </Grid>
               </Grid>
@@ -139,12 +159,13 @@ export default function LoginSignup() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                onClick={handleSignup}
               >
                 Sign Up
               </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link onClick={handleChange} variant="body2">
                     Already have an account? Sign in
                   </Link>
                 </Grid>

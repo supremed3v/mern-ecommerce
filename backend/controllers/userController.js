@@ -5,15 +5,15 @@ import crypto from "crypto";
 
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password, address, mobile } = req.body;
+    const { name, email, password } = req.body;
 
     // Validate user
-    if (!name || !email || !password || !address || !mobile) {
-      return res.status(400).json({
-        success: false,
-        message: "Please enter all fields",
-      });
-    }
+    // if (!name || !email || !password) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "Please enter all fields",
+    //   });
+    // }
 
     // Check for existing user
     const valUser = await User.findOne({ email });
@@ -29,8 +29,6 @@ export const registerUser = async (req, res) => {
       name,
       email,
       password,
-      address,
-      mobile,
     });
     sendToken(user, 200, res);
   } catch (error) {

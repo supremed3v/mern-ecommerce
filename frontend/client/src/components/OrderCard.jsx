@@ -51,11 +51,7 @@ const OrderCard = ({ orders }) => {
                                     </Typography>
                                     <Divider />
                                     <Typography variant="h6" color="text.secondary">
-                                        ${order.orderItems[0].price}
-                                    </Typography>
-                                    <Divider />
-                                    <Typography variant="body2" color="text.secondary">
-                                        {order.price}
+                                        ${order.totalPrice}
                                     </Typography>
                                     <Divider />
                                     <Typography variant="body2" color="text.secondary">

@@ -36,7 +36,7 @@ const ProductCard = ({ products }) => {
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
+          gridTemplateColumns: "repeat(3, 1fr)",
           gap: 3,
           my: 6,
           mx: 15,

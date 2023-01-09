@@ -2,7 +2,7 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 import { useProductContext } from "../context/ProductContext";
 import { CardElement, useStripe, useElements, Elements } from '@stripe/react-stripe-js';
-
+import { useNavigate } from "react-router-dom";
 
 import { useAlert } from "react-alert";
 
@@ -13,6 +13,7 @@ import { Box } from "@mui/material";
 import { loadStripe } from "@stripe/stripe-js";
 
 function FormFunction() {
+  const navigate = useNavigate();
   const alert = useAlert();
   const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
   const cardStyle = {
@@ -102,8 +103,6 @@ function FormFunction() {
           sessionStorage.removeItem("cartItems");
           sessionStorage.removeItem("shippingInfo");
           localStorage.removeItem("cartItems");
-
-
         }
       }
 
@@ -112,6 +111,7 @@ function FormFunction() {
       alert.error(error.response.data.message);
     }
   }
+
 
   return (
     <React.Fragment>
@@ -156,7 +156,7 @@ export default function Payment() {
     appearance,
   }
   return (
-    <Elements stripe={loadStripe(`${process.env.REACT_APP_STRIPE_API_KEY}`)}
+    <Elements stripe={loadStripe("")}
       options={options}
     >
       <FormFunction />

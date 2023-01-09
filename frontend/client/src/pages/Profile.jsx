@@ -11,6 +11,8 @@ const Profile = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  console.log(authState.user)
+
   const alert = useAlert()
 
   const handleUpdateProfile = () => {

@@ -116,7 +116,7 @@ const OrderDetails = () => {
                                             <h3>Product Name: {item.name}</h3>
                                             <p>Quantity: {item.quantity}</p>
                                             <Box>
-                                                {orderDetails?.orderStatus === "Shipped" ? (
+                                                {orderDetails?.orderStatus === "Delivered" ? (
                                                     <Button variant='contained' sx={{
                                                         mt: 2,
                                                     }}

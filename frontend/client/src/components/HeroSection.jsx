@@ -118,8 +118,8 @@ const HeroSection = () => {
                 alt="img"
                 style={{
                   objectFit: "cover",
-                  width: "500px",
-                  height: "500px",
+                  width: "400px",
+                  height: "400px",
                   marginTop: "10px",
                   borderRadius: 10,
 
@@ -132,7 +132,7 @@ const HeroSection = () => {
               position: "absolute",
               zIndex: 999,
               top: "100px",
-              right: "300px",
+              right: "50px",
               transition: "1s",
               "&:hover": {
                 transform: "scale3d(0.85, 0.85, 1)",
@@ -152,8 +152,8 @@ const HeroSection = () => {
             <Box sx={{
               position: "absolute",
               zIndex: 999,
-              top: "580px",
-              right: "600px",
+              top: "400px",
+              right: "400px",
               transition: "1s",
               "&:hover": {
                 transform: "scale3d(0.85, 0.85, 1)",
