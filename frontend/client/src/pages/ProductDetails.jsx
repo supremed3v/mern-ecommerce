@@ -24,6 +24,11 @@ const ProductDetails = () => {
   useEffect(() => {
     getProductDetails(id);
   }, []);
+  const options = {
+    value: product.ratings,
+    readOnly: true,
+    precision: 0.5,
+  };
   const alert = useAlert();
   const addToCartHandler = (product) => {
     const isProductInCart = cart.find((item) => item._id === product._id);
@@ -92,7 +97,7 @@ const ProductDetails = () => {
                     {product.description}
                   </Typography>
                   <Typography variant="body2">
-                    <Rating name="read-only" value={product.rating} readOnly />
+                    <Rating {...options} />
                   </Typography>
                   <Typography variant="body2">
                     {product.numOfReviews} reviews
@@ -122,6 +127,20 @@ const ProductDetails = () => {
       ) : (
         <h1>Loading...</h1>
       )}
+
+      {product && product.reviews.map((review) => (
+        <>
+          <Typography>
+            {review.name}
+          </Typography>
+          <Typography>
+            {review.comment}
+          </Typography>
+          <Typography>
+            {review.rating}
+          </Typography>
+        </>
+      ))}
     </div>
   );
 };

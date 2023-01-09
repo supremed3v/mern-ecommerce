@@ -1,16 +1,17 @@
-import { Box, Button, Card, CardContent, Grid, Typography, Dialog, TextField, DialogActions, DialogContent, DialogTitle, DialogContentText, Rating } from '@mui/material'
+import { Box, Button, Card, CardContent, Grid, Typography, Dialog, TextField, DialogActions, DialogContent, DialogTitle, Rating } from '@mui/material'
 import React from 'react'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAuthContext } from '../context/AuthContext'
+import { useAlert } from 'react-alert'
 const OrderDetails = () => {
     const [open, setOpen] = useState(false);
-
+    const alert = useAlert()
     const [rating, setRating] = useState(null);
     const [comment, setComment] = useState("");
     const [productId, setProductId] = useState(null)
 
-    const { getOrderDetails, orderDetails } = useAuthContext()
+    const { getOrderDetails, orderDetails, newReview, authState } = useAuthContext()
     const { id } = useParams()
     useEffect(() => {
         getOrderDetails(id)
@@ -26,9 +27,14 @@ const OrderDetails = () => {
         myForm.set('rating', rating)
         myForm.set('comment', comment)
         myForm.set("productId", productId)
+
+        newReview(myForm)
+        setOpen(false)
+        if (authState.successMessage === true) {
+            alert.success("Review submitted!")
+        }
     }
 
-    console.log(orderDetails)
     if (!orderDetails) return (
         <div>
             <Typography variant="h4" component="h1" gutterBottom sx={{
@@ -43,6 +49,10 @@ const OrderDetails = () => {
                 No order found
             </Typography>
         </div>
+    )
+
+    if (authState.loading) return (
+        <div>Loading...</div>
     )
 
     return (

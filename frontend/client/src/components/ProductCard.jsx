@@ -81,9 +81,9 @@ const ProductCard = ({ products }) => {
                     {product.stock} in stock
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {product.numReviews} reviews
+                    {product.numOfReviews} reviews
                   </Typography>
-                  <Rating name="read-only" value={product.rating} readOnly />
+                  <Rating name="read-only" value={product?.ratings} readOnly />
                 </CardContent>
               </CardActionArea>
               <Button

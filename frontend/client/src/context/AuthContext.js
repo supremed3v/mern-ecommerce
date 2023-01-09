@@ -9,7 +9,8 @@ const initialState = {
   loading: false,
   error: false,
   userOrders: [],
-  orderDetails:{}
+  orderDetails:{},
+  successMessage: null
 };
 
 export const AuthContextProvider = ({ children }) => {
@@ -159,9 +160,31 @@ export const AuthContextProvider = ({ children }) => {
     }
   }
 
+  const newReview = async (data) => {
+    setAuthState({
+      ...authState,
+      loading: true
+    })
+    try {
+      const res = await axios.put('/api/v1/review', data)
+      setAuthState({
+        ...authState,
+        loading: false,
+        error: false,
+        successMessage: res.data.success
+      })
+    } catch (error) {
+      setAuthState({
+        ...authState,
+        loading: false,
+        error: error.response.data.message,
+      });
+    }
+  }
+
   return (
     <AuthContext.Provider
-      value={{ authState, login, logout, register, loadUser, updateProfile, updatePassword, getUserOrder, userOrders: authState.userOrders, getOrderDetails, orderDetails: authState.orderDetails }}
+      value={{ authState, login, logout, register, loadUser, updateProfile, updatePassword, getUserOrder, userOrders: authState.userOrders, getOrderDetails, orderDetails: authState.orderDetails, newReview }}
     >
       {children}
     </AuthContext.Provider>
