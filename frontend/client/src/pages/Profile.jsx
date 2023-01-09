@@ -50,7 +50,11 @@ const Profile = () => {
       <Box sx={{
         mt: 5,
       }}>
-        <Typography textAlign={"center"} variant="h1">Account Information</Typography>
+        <Typography textAlign={"center"} variant="h1"
+          sx={{
+            color: "#e7e7e7e7"
+          }}
+        >Account Information</Typography>
       </Box>
       <Box sx={{
         display: "flex",
@@ -59,7 +63,11 @@ const Profile = () => {
         justifyContent: "center",
         mt: 10
       }}>
-        <Typography textAlign={"center"} variant="h3">Profile</Typography>
+        <Typography textAlign={"center"} variant="h3"
+          sx={{
+            color: "#e7e7e7e7"
+          }}
+        >Profile</Typography>
         <Box sx={{
           display: "flex",
           flexDirection: "column",
@@ -71,7 +79,8 @@ const Profile = () => {
         }}>
           <Box sx={{
             width: "100%",
-            mb: 2
+            mb: 2,
+            bgcolor: "#e7e7e7e7"
           }}>
             <TextField
               fullWidth
@@ -83,7 +92,8 @@ const Profile = () => {
           </Box>
           <Box sx={{
             width: "100%",
-            mb: 2
+            mb: 2,
+            bgcolor: "#e7e7e7e7"
           }}>
             <TextField
               fullWidth
@@ -102,7 +112,8 @@ const Profile = () => {
           >Update Profile</Button>
         </Box>
         <Typography textAlign={"center"} variant="h3" sx={{
-          mt: 5
+          mt: 5,
+          color: "#e7e7e7e7"
         }}>Update Password</Typography>
         <Box sx={{
           display: "flex",
@@ -115,7 +126,8 @@ const Profile = () => {
         }}>
           <Box sx={{
             width: "100%",
-            mb: 2
+            mb: 2,
+            bgcolor: "#e7e7e7e7"
           }}>
             <TextField
               fullWidth
@@ -128,7 +140,8 @@ const Profile = () => {
           </Box>
           <Box sx={{
             width: "100%",
-            mb: 2
+            mb: 2,
+            bgcolor: "#e7e7e7e7"
           }}>
             <TextField
               fullWidth
@@ -141,7 +154,8 @@ const Profile = () => {
           </Box>
           <Box sx={{
             width: "100%",
-            mb: 2
+            mb: 2,
+            bgcolor: "#e7e7e7e7"
           }}>
             <TextField
               fullWidth

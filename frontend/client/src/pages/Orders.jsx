@@ -15,6 +15,7 @@ const Orders = () => {
         sx={{
           textAlign: "center",
           my: 2,
+          color: "#e7e7e7e7"
         }}
       >
         Orders

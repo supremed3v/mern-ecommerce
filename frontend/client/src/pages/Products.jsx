@@ -56,7 +56,7 @@ const Products = () => {
           textAlign: "center",
           fontSize: "3rem",
           fontWeight: "bold",
-          color: "black",
+          color: "#e7e7e7e7",
           marginTop: "2rem",
           marginBottom: "2rem",
         }}

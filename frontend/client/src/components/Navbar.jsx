@@ -85,6 +85,8 @@ function Navbar() {
     color: "white",
     textDecoration: "none",
     fontWeight: "bold",
+    textTransform: "uppercase",
+    marginLeft: "8px",
   };
 
   return (
@@ -92,23 +94,21 @@ function Navbar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
+          <NavLink
+            style={{
+
+              marginRight: "8px",
               display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
+              fontSize: 18,
             }}
           >
             LOGO
-          </Typography>
+          </NavLink>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -171,26 +171,22 @@ function Navbar() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <Button
-                key={page.name}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
+              <NavLink
+                to={page.link}
+                style={({ isActive }) =>
+                  isActive
+                    ? activeStyle
+                    : {
+                      color: "#7B9EB0",
+                      textDecoration: "none",
+                      fontWeight: "bold",
+                      textTransform: "uppercase",
+                      marginLeft: "8px",
+                    }
+                }
               >
-                <NavLink
-                  to={page.link}
-                  style={({ isActive }) =>
-                    isActive
-                      ? activeStyle
-                      : {
-                        color: "#7B9EB0",
-                        textDecoration: "none",
-                        fontWeight: "bold",
-                      }
-                  }
-                >
-                  {page.name}
-                </NavLink>
-              </Button>
+                {page.name}
+              </NavLink>
             ))}
           </Box>
 
