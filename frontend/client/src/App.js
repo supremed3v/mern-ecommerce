@@ -15,11 +15,9 @@ import Payment from "./components/Payment";
 import Profile from "./pages/Profile";
 import Orders from "./pages/Orders";
 import OrderDetails from "./pages/OrderDetails";
+
 function App() {
-
   const {loadUser, authState, getUserOrder} = useAuthContext()
-
-  
 
   useEffect(() => {
     loadUser()

@@ -1,14 +1,32 @@
-import { Box, Card, CardContent, Grid, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, Grid, Typography, Dialog, TextField, DialogActions, DialogContent, DialogTitle, DialogContentText, Rating } from '@mui/material'
 import React from 'react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAuthContext } from '../context/AuthContext'
 const OrderDetails = () => {
+    const [open, setOpen] = useState(false);
+
+    const [rating, setRating] = useState(null);
+    const [comment, setComment] = useState("");
+    const [productId, setProductId] = useState(null)
+
     const { getOrderDetails, orderDetails } = useAuthContext()
     const { id } = useParams()
     useEffect(() => {
         getOrderDetails(id)
     }, [])
+
+    const submitReviewToggle = () => {
+        open ? setOpen(false) : setOpen(true)
+    }
+
+
+    const reviewSubmitHandler = () => {
+        const myForm = new FormData()
+        myForm.set('rating', rating)
+        myForm.set('comment', comment)
+        myForm.set("productId", productId)
+    }
 
     console.log(orderDetails)
     if (!orderDetails) return (
@@ -16,8 +34,9 @@ const OrderDetails = () => {
             <Typography variant="h4" component="h1" gutterBottom sx={{
                 textAlign: "center",
                 my: 2,
-
-            }} >
+            }}
+                color={"#e7e7e7e7"}
+            >
                 Order Details - {id}
             </Typography>
             <Typography variant="h6" component="h1" gutterBottom>
@@ -86,11 +105,30 @@ const OrderDetails = () => {
                                         <div>
                                             <h3>Product Name: {item.name}</h3>
                                             <p>Quantity: {item.quantity}</p>
+                                            <Box>
+                                                {orderDetails?.orderStatus === "Shipped" ? (
+                                                    <Button variant='contained' sx={{
+                                                        mt: 2,
+                                                    }}
+                                                        size={"small"}
+                                                        onClick={function (event) {
+                                                            setProductId(item._id);
+                                                            submitReviewToggle()
+                                                        }}
+                                                    >
+                                                        Post Review
+                                                    </Button>
+                                                ) : (
+                                                    <div></div>
+                                                )}
+                                            </Box>
                                         </div>
+
                                     </div>
                                     <div>
                                         <h3>Product Cost: ${item.price}</h3>
                                     </div>
+
                                 </div>
                             )
 
@@ -101,13 +139,13 @@ const OrderDetails = () => {
                         <Box
                             sx={{
                                 display: "flex",
-                                flexWrap: "wrap",
                                 justifyContent: "center",
                                 mt: 5,
+                                flexDirection: "column"
                             }}
                         >
                             {orderDetails && (
-
+                                // <></>
                                 <Card sx={{ maxWidth: 345 }}>
                                     <CardContent>
                                         <Typography
@@ -156,11 +194,42 @@ const OrderDetails = () => {
 
                                     </CardContent>
                                 </Card>
+
                             )}
+
+
                         </Box>
+
                     </Grid>
+
                 </Grid>
+
             )}
+            <Dialog open={open} onClose={submitReviewToggle}>
+                <DialogTitle>Post Review</DialogTitle>
+                <DialogContent>
+                    <Rating
+                        size={"large"}
+                        value={rating}
+                        onChange={(e) => setRating(e.target.value)}
+                    />
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="review"
+                        label="Review"
+                        type="text"
+                        fullWidth
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={submitReviewToggle}>Cancel</Button>
+                    <Button onClick={reviewSubmitHandler}>Submit</Button>
+                </DialogActions>
+            </Dialog>
+
         </div>
     )
 }

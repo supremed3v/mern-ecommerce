@@ -40,6 +40,7 @@ export default function AddressForm() {
       {/* <Checkout activeStep={0} /> */}
       <Typography variant="h3" gutterBottom textAlign={"center"} sx={{
         marginTop: "2rem",
+        color: "#e7e7e7e7"
       }}>
         Shipping address
       </Typography>
@@ -47,6 +48,7 @@ export default function AddressForm() {
         width: "60%",
         margin: "auto",
         marginTop: "2rem",
+        background: "#e7e7e7e7"
       }}>
         <Grid item xs={12}>
           <TextField

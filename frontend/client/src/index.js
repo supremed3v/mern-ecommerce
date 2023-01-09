@@ -9,13 +9,14 @@ import "@fontsource/roboto/700.css";
 import { ProductProvider } from "./context/ProductContext";
 import { positions, transitions, Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
-import { AuthContextProvider } from "./context/AuthContext";
+import { AuthContextProvider } from "./context/AuthContext"
 
 const options = {
   timeout: 5000,
   position: positions.BOTTOM_CENTER,
   transition: transitions.SCALE,
 };
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

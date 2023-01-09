@@ -45,7 +45,13 @@ const ProductCard = ({ products }) => {
       >
         {products &&
           products.map((product) => (
-            <Card sx={{ maxWidth: 300, mb: 4 }} key={product._id}>
+            <Card sx={{
+              maxWidth: 300, mb: 4,
+              transition: "1s",
+              "&:hover": {
+                transform: "scale3d(0.85, 0.85, 1)",
+              },
+            }} key={product._id} >
               <CardActionArea
                 onClick={() => {
                   navigate(`/product/${product._id}`);
@@ -59,15 +65,15 @@ const ProductCard = ({ products }) => {
                   sx={{ objectFit: "cover" }}
                 />
                 <CardContent>
-                  <Divider/>
+                  <Divider />
                   <Typography gutterBottom variant="h5" component="div">
                     {product.name}
                   </Typography>
-                  <Divider/>
+                  <Divider />
                   <Typography variant="body2" color="text.secondary">
                     {`${product.description.slice(0, 70)}...`}
                   </Typography>
-                  <Divider/>
+                  <Divider />
                   <Typography variant="h6" color="text.secondary">
                     ${product.price}
                   </Typography>

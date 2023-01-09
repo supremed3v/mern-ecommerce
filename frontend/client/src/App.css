@@ -1,3 +1,7 @@
+body{
+  background-color: #214352;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -154,6 +158,11 @@ input {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.boxShadow{
+  -webkit-box-shadow: -11px 8px 33px -6px rgba(0,0,0,0.75);
+-moz-box-shadow: -11px 8px 33px -6px rgba(0,0,0,0.75);
+box-shadow: -11px 8px 33px -6px rgba(0,0,0,0.75);
 }
 
 @keyframes loading {

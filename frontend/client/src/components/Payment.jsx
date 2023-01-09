@@ -40,16 +40,16 @@ function FormFunction() {
 
   const { cart, shippingInfo, createOrder, } = useProductContext();
   const { authState } = useAuthContext();
-  console.log(authState.user.name)
+  console.log(orderInfo)
 
   const paymentData = {
-    amount: orderInfo.totalPrice * 100,
+    amount: orderInfo?.totalPrice * 100,
   }
 
   const order = {
     shippingInfo,
     orderItems: cart,
-    itemsPrice: orderInfo.total,
+    itemsPrice: orderInfo?.total,
     taxPrice: orderInfo.tax,
     shippingPrice: orderInfo.shippingCharges,
     totalPrice: orderInfo.totalPrice,
@@ -100,7 +100,6 @@ function FormFunction() {
           createOrder(order);
           alert.success("Your order has been placed successfully");
           sessionStorage.removeItem("cartItems");
-          sessionStorage.removeItem("orderInfo");
           sessionStorage.removeItem("shippingInfo");
           localStorage.removeItem("cartItems");
 

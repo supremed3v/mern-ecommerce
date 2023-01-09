@@ -59,7 +59,7 @@ function Navbar() {
   const navigate = useNavigate();
   const { authState, logout } = useAuthContext();
 
-  const cart = JSON.parse(localStorage.getItem("cart"));
+  const { cart } = useProductContext()
 
   const handleLogout = () => {
     logout();
@@ -82,12 +82,13 @@ function Navbar() {
   };
 
   let activeStyle = {
-    textDecoration: "underline",
     color: "white",
+    textDecoration: "none",
+    fontWeight: "bold",
   };
 
   return (
-    <AppBar position="sticky" sx={{ bgcolor: "darkblue" }}>
+    <AppBar position="sticky" sx={{ bgcolor: "#2A5161" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -181,7 +182,7 @@ function Navbar() {
                     isActive
                       ? activeStyle
                       : {
-                        color: "white",
+                        color: "#7B9EB0",
                         textDecoration: "none",
                         fontWeight: "bold",
                       }
@@ -217,7 +218,7 @@ function Navbar() {
 
             <IconButton onClick={() => navigate("/cart")}>
               <Box>
-                {cart && cart.length > 0 ? (
+                {cart && cart.length !== 0 ? (
                   <Badge badgeContent={cart.length} color="error">
                     <ShoppingCartIcon sx={{ color: "white" }} />
                   </Badge>
