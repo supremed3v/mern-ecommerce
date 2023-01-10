@@ -14,16 +14,17 @@ const ResetPassword = () => {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const handleSubmit = () => {
-        if(password === confirmPassword){
+        
+            if(password !== confirmPassword){
+                alert.error('Password does not match')
+                return
+            }
             const myForm = new FormData()
             myForm.set('password', password)
             myForm.set('confirmPassword)', confirmPassword)
             resetPassword(id, myForm)
             console.log(id, password, confirmPassword)
-        }
-        else{
-            alert.error('Passwords do not match')
-        }
+        
     }
 
     useEffect(()=>{

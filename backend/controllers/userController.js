@@ -93,8 +93,13 @@ export const forgotPassword = async (req, res, next) => {
       message: "User not found",
     });
   }
-  const resetToken = user.getResetPasswordToken();
 
+  // Generate password token
+
+  const resetToken = crypto.randomBytes(32).toString("hex");
+
+  user.resetPasswordToken = resetToken;
+  user.resetPasswordExpire = Date.now() + 30 * 60 * 1000;
   await user.save({ validateBeforeSave: false });
 
   // Create reset password url
@@ -131,61 +136,43 @@ export const forgotPassword = async (req, res, next) => {
 
 export const resetPassword = async (req, res, next) => {
   // Hash URL token
-  const resetPasswordToken = crypto
-    .createHash("sha256")
-    .update(req.params.resetToken)
-    .digest("hex");
+  const { token } = req.params;
+  try {
+    const user = await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpire: { $gt: Date.now() },
+    })
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found or token has expired"
+      })
+    }
 
-  const user = await User.findOne({
-    resetPasswordToken,
-    resetPasswordExpire: { $gt: Date.now() },
-  });
+    // if (req.body.password !== req.body.confirmPassword) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "Password does not match",
+    //   });
+    // }
 
-  if (!user) {
-    return res.status(400).json({
+    // Set new password
+    user.password = req.body.password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password updated successfully",
+    });
+
+  } catch (error) {
+    res.status(500).json({
       success: false,
-      message: "Password reset token is invalid or has expired",
+      message: error.message,
     });
   }
 
-  if (req.body.password !== req.body.confirmPassword) {
-    return res.status(400).json({
-      success: false,
-      message: "Password does not match",
-    });
-  }
-
-  // Set new password
-  user.password = req.body.password;
-
-  user.resetPasswordToken = undefined;
-  user.resetPasswordExpire = undefined;
-
-  await user.save();
-
-  sendToken(user, 200, res);
-
-  res.status(200).json({
-    success: true,
-    message: "Password updated successfully",
-  });
-
-  // try {
-  //   await sendEmail({
-  //     email: user.email,
-  //     subject: "Your password has been changed",
-  //     message: "This is a confirmation that the password for your account has just been changed.",
-  //   });
-  //   res.status(200).json({
-  //     success: true,
-  //     message: "Password updated successfully",
-  //   });
-  // } catch (error) {
-  //   return res.status(500).json({
-  //     success: false,
-  //     message: error.message,
-  //   });
-  // }
 };
 
 export const getUserDetails = async (req, res, next) => {
