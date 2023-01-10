@@ -36,7 +36,7 @@ const ResetPassword = () => {
         if(authState.error){
             alert.error(authState.error)
         }
-    },[authState.successMessage, authState.error])
+    },[authState.successMessage, authState.error, alert])
     
     return (
         <div>

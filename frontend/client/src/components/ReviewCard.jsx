@@ -4,16 +4,7 @@ import React from 'react'
 
 const ReviewCard = ({ review }) => {
     return (
-        <Box
-            sx={{
-                display: "grid",
-                gridTemplateColumns: "repeat(4, 1fr)",
-                gap: 3,
-                my: 6,
-                mx: 15,
-
-            }}
-        >
+       <>
             <Card sx={{
                 maxWidth: 300, mb: 4,
                 transition: "1s",
@@ -38,7 +29,7 @@ const ReviewCard = ({ review }) => {
                 </CardActionArea>
 
             </Card>
-        </Box>
+        </>
     )
 }
 

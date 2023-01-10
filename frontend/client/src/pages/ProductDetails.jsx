@@ -128,9 +128,20 @@ const ProductDetails = () => {
             color: "#e7e7e7e7"
           }} >Reviews</Typography>
           {product && product.reviews ? (
-            product.reviews.map((review) => (
-              <ReviewCard review={review} />
-            ))
+             <Box
+             sx={{
+               display: "grid",
+               gridTemplateColumns: "repeat(3, 1fr)",
+               gap: 3,
+               my: 6,
+               mx: 15,
+     
+             }}
+           >
+           { product.reviews.map((review) => (
+                <ReviewCard review={review} />
+            ))}
+              </Box>
           ) : (
             <Typography variant="h6" textAlign={"center"} sx={{
               color: "#e7e7e7e7"

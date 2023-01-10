@@ -148,13 +148,6 @@ export const resetPassword = async (req, res, next) => {
       })
     }
 
-    // if (req.body.password !== req.body.confirmPassword) {
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: "Password does not match",
-    //   });
-    // }
-
     // Set new password
     user.password = req.body.password;
     user.resetPasswordToken = undefined;
