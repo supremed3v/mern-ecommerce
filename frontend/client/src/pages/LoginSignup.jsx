@@ -21,6 +21,7 @@ import { useAlert } from "react-alert";
 
 export default function LoginSignup() {
   const navigate = useNavigate();
+  const alert = useAlert()
   const { register, login, authState, } = useAuthContext();
   const [value, setValue] = useState(0);
   const [email, setEmail] = useState("");
@@ -45,8 +46,8 @@ export default function LoginSignup() {
 
 
   useEffect(() => {
-    if (authState.error) {
-      alert(authState.error)
+    if (authState.error === "Auth") {
+      alert.error(authState.error)
     }
 
     if (authState.isAuthenticated) {
@@ -233,7 +234,9 @@ export default function LoginSignup() {
                 </Button>
                 <Grid container>
                   <Grid item xs>
-                    <Link href="#" variant="body2">
+                    <Link variant="body2" onClick={() => navigate('/password/forgot')} style={{
+                      cursor: 'pointer'
+                    }} >
                       Forgot password?
                     </Link>
                   </Grid>

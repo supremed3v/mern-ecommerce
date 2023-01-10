@@ -9,15 +9,18 @@ const sendEmail = async (options) => {
       user: process.env.SMTP_EMAIL,
       pass: process.env.SMTP_PASSWORD,
     },
-  });
+  },
+{
+  secure: false,
+}
+  );
 
   // 2) Define the email options
   const mailOptions = {
-    from: "Admin <  >",
+    from: `Admin <${process.env.SMTP_EMAIL}>`,
     to: options.email,
     subject: options.subject,
     text: options.message,
-    // html:
   };
 
   // 3) Actually send the email

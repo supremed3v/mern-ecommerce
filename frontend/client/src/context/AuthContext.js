@@ -189,6 +189,54 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
+  const forgotPassword = async (email) => {
+    setAuthState({
+      ...authState,
+      loading: true,
+    })
+    try {
+      const res = await axios.post("/api/v1/password/forgot", email);
+      setAuthState({
+        ...authState,
+        loading: false,
+        error: false,
+        successMessage: res.data.message,
+      });
+
+    } catch (error) {
+      setAuthState({
+        ...authState,
+        loading: false,
+        error: error.response.data.message,
+      });
+
+    }
+  }
+
+  const resetPassword = async (id, passwords) => {
+    setAuthState({
+      ...authState,
+      loading: true,
+    })
+    try {
+      const res = await axios.put(`/api/v1/password/reset/${id}`, passwords);
+      setAuthState({
+        ...authState,
+        loading: false,
+        error: false,
+        successMessage: res.data.message,
+      });
+
+    } catch (error) {
+      setAuthState({
+        ...authState,
+        loading: false,
+        error: error.response.data.message,
+      });
+
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -204,6 +252,8 @@ export const AuthContextProvider = ({ children }) => {
         getOrderDetails,
         orderDetails: authState.orderDetails,
         newReview,
+        forgotPassword,
+        resetPassword
       }}
     >
       {children}

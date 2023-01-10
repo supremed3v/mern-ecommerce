@@ -98,9 +98,7 @@ export const forgotPassword = async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   // Create reset password url
-  const resetUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/api/v1/password/reset/${resetToken}`;
+  const resetUrl = `http://localhost:3000/password/reset/${resetToken}`;
 
   const message = `Your password reset token is as follow:
 

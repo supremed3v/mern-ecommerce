@@ -15,6 +15,8 @@ import Payment from "./components/Payment";
 import Profile from "./pages/Profile";
 import Orders from "./pages/Orders";
 import OrderDetails from "./pages/OrderDetails";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   const {loadUser, authState, getUserOrder} = useAuthContext()
@@ -46,6 +48,8 @@ function App() {
           <Route path="/order/confirm" element={<ConfirmOrder />} />
           <Route path="/process/payment" element={<Payment/>} />
           <Route path="/profile" element={<Profile/>} />
+          <Route path="/password/forgot" element={<ForgotPassword/>} />
+          <Route path="/password/reset/:id" element={<ResetPassword/>} />
           
 
           <Route path="/orders" element={<Orders/>} />
