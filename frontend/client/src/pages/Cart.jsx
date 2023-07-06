@@ -15,10 +15,11 @@ import Paper from "@mui/material/Paper";
 import { useAlert } from "react-alert";
 const Cart = () => {
   const navigate = useNavigate();
-  const { addQuantity, reduceQuantity, totalPrice, removeProductFromCart } = useProductContext();
+  const { addQuantity, reduceQuantity, totalPrice, removeProductFromCart } =
+    useProductContext();
   const { authState } = useAuthContext();
   const alert = useAlert();
-  const cart = JSON.parse(localStorage.getItem("cart"));
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
   return (
     <div>
       <Helmet>
@@ -37,13 +38,23 @@ const Cart = () => {
           <Typography variant="h4" sx={{ mb: 2 }}>
             Your cart is empty
           </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => navigate("/")}
+          >
+            Go to Home
+          </Button>
         </Box>
       ) : (
-        <TableContainer component={Paper} sx={{
-          width: "80%",
-          margin: "0 auto",
-          marginTop: "50px",
-        }}>
+        <TableContainer
+          component={Paper}
+          sx={{
+            width: "80%",
+            margin: "0 auto",
+            marginTop: "50px",
+          }}
+        >
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -55,7 +66,7 @@ const Cart = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {cart.map((item) => (
+              {cart?.map((item) => (
                 <TableRow
                   key={item._id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -84,9 +95,7 @@ const Cart = () => {
                     >
                       -
                     </Button>
-                    <span style={{ margin: "0 10px" }}>
-                      {item.quantity}
-                    </span>
+                    <span style={{ margin: "0 10px" }}>{item.quantity}</span>
                     <Button
                       variant="contained"
                       color="primary"
@@ -94,7 +103,9 @@ const Cart = () => {
                     >
                       +
                     </Button>
-                    <Button variant="contained" color="error"
+                    <Button
+                      variant="contained"
+                      color="error"
                       onClick={() => removeProductFromCart(item._id)}
                     >
                       Remove
@@ -113,16 +124,20 @@ const Cart = () => {
               </TableRow>
               <TableRow>
                 <TableCell colSpan={2} align="right">
-                  <Button variant="contained" color="primary" onClick={() => {
-                    if (authState.isAuthenticated === false) {
-                      alert.show("Please login to checkout");
-                      setTimeout(() => {
-                        navigate("/login-signup");
-                      }, 1000);
-                    } else {
-                      navigate("/checkout");
-                    }
-                  }} >
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      if (authState.isAuthenticated === false) {
+                        alert.show("Please login to checkout");
+                        setTimeout(() => {
+                          navigate("/login-signup");
+                        }, 1000);
+                      } else {
+                        navigate("/checkout");
+                      }
+                    }}
+                  >
                     Checkout
                   </Button>
                 </TableCell>
@@ -138,9 +153,7 @@ const Cart = () => {
           mt: 2,
           mr: 10,
         }}
-      >
-
-      </Box>
+      ></Box>
     </div>
   );
 };

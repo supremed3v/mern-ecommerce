@@ -59,7 +59,7 @@ function Navbar() {
   const navigate = useNavigate();
   const { authState, logout } = useAuthContext();
 
-  const { cart } = useProductContext()
+  const { cart } = useProductContext();
 
   const handleLogout = () => {
     logout();
@@ -96,7 +96,6 @@ function Navbar() {
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <NavLink
             style={{
-
               marginRight: "8px",
               display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
@@ -177,12 +176,12 @@ function Navbar() {
                   isActive
                     ? activeStyle
                     : {
-                      color: "#7B9EB0",
-                      textDecoration: "none",
-                      fontWeight: "bold",
-                      textTransform: "uppercase",
-                      marginLeft: "8px",
-                    }
+                        color: "#7B9EB0",
+                        textDecoration: "none",
+                        fontWeight: "bold",
+                        textTransform: "uppercase",
+                        marginLeft: "8px",
+                      }
                 }
               >
                 {page.name}
@@ -220,7 +219,6 @@ function Navbar() {
                   </Badge>
                 ) : (
                   <ShoppingCartIcon sx={{ color: "white" }} />
-
                 )}
               </Box>
             </IconButton>
@@ -244,17 +242,21 @@ function Navbar() {
                 <MenuItem
                   key={setting.name}
                   onClick={
-                    setting.name === "Logout" ? handleLogout : handleCloseUserMenu
+                    setting.name === "Logout"
+                      ? handleLogout
+                      : handleCloseUserMenu
                   }
                 >
-                  <Link to={setting.link}
+                  <Link
+                    to={setting.link}
                     style={{
                       color: "black",
                       textDecoration: "none",
                       fontWeight: "bold",
-
                     }}
-                  >{setting.name}</Link>
+                  >
+                    {setting.name}
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>

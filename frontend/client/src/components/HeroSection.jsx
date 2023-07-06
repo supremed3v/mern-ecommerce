@@ -1,23 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Typography, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
   const navigate = useNavigate();
   const decorative = "One-Stop";
-  const span = "Online Shopping"
+  const span = "Online Shopping";
   const title = "For your fashion needs.";
+
+  const [isScreenWide, setIsScreenWide] = useState(window.outerWidth > 1400);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsScreenWide(window.outerWidth > 1400);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const style = isScreenWide
+    ? {
+        display: "none",
+      }
+    : {
+        width: "100px",
+        height: "100px",
+        objectFit: "cover",
+        borderRadius: 10,
+      };
+
   return (
     <>
-      <Grid container spacing={1} columns={15} sx={{
-        mb: 10,
-        px: 20,
-        py: 10,
-      }}>
-        <Grid item xs={8} sx={{
-          ml: 10,
-          mr: 10,
-        }}>
+      <Grid
+        container
+        spacing={1}
+        columns={15}
+        sx={{
+          mb: 10,
+          px: 20,
+          py: 10,
+        }}
+      >
+        <Grid
+          item
+          xs={8}
+          sx={{
+            ml: 10,
+            mr: 10,
+          }}
+        >
           <Box
             sx={{
               flexDirection: "column",
@@ -51,12 +86,12 @@ const HeroSection = () => {
                     fontWeight: 800,
                     color: "#E68283",
                     display: "inline-block",
-                    fontStyle: "italic"
-                  }}>
+                    fontStyle: "italic",
+                  }}
+                >
                   {span}
                 </Typography>
               </Typography>
-
             </Box>
             <Typography
               variant="h1"
@@ -90,7 +125,7 @@ const HeroSection = () => {
                 sx={{
                   fontSize: "md",
                   letterSpacing: 0.5,
-                  width: 500
+                  width: 500,
                 }}
                 onClick={() => navigate("/products")}
               >
@@ -100,9 +135,11 @@ const HeroSection = () => {
           </Box>
         </Grid>
         <Grid item xs={4}>
-          <Box style={{
-            alignContent: "flex-end",
-          }}>
+          <Box
+            style={{
+              alignContent: "flex-end",
+            }}
+          >
             <Box
               style={{
                 transition: "1s",
@@ -114,7 +151,9 @@ const HeroSection = () => {
               }}
             >
               <img
-                src={"https://images.unsplash.com/photo-1483181957632-8bda974cbc91?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"}
+                src={
+                  "https://images.unsplash.com/photo-1483181957632-8bda974cbc91?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+                }
                 alt="img"
                 style={{
                   objectFit: "cover",
@@ -122,57 +161,51 @@ const HeroSection = () => {
                   height: "400px",
                   marginTop: "10px",
                   borderRadius: 10,
-
                 }}
                 className="boxShadow"
               />
             </Box>
 
-            <Box sx={{
-              position: "absolute",
-              zIndex: 999,
-              top: "100px",
-              right: "50px",
-              transition: "1s",
-              "&:hover": {
-                transform: "scale3d(0.85, 0.85, 1)",
-              },
-            }}>
-              <img src="https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="" style={{
-                width: "150px",
-                height: "100px",
-                objectFit: "cover",
-                borderRadius: "10px",
-                borderBottom: "20px solid white",
-
+            <Box
+              sx={{
+                position: "absolute",
+                zIndex: 999,
+                top: "100px",
+                right: "50px",
+                transition: "1s",
+                "&:hover": {
+                  transform: "scale3d(0.85, 0.85, 1)",
+                },
               }}
+              style={style}
+            >
+              <img
+                src="https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+                alt=""
+                style={style}
                 className="boxShadow"
               />
             </Box>
-            <Box sx={{
-              position: "absolute",
-              zIndex: 999,
-              top: "400px",
-              right: "400px",
-              transition: "1s",
-              "&:hover": {
-                transform: "scale3d(0.85, 0.85, 1)",
-              },
-
-            }}>
-              <img src="https://images.unsplash.com/photo-1603625953304-97b6e41336b5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="" style={{
-                width: "150px",
-                height: "100px",
-                objectFit: "cover",
-                borderRadius: "10px",
-                borderBottom: "20px solid white",
-
+            <Box
+              sx={{
+                position: "absolute",
+                zIndex: 999,
+                top: "400px",
+                right: "400px",
+                transition: "1s",
+                "&:hover": {
+                  transform: "scale3d(0.85, 0.85, 1)",
+                },
               }}
+            >
+              <img
+                src="https://images.unsplash.com/photo-1603625953304-97b6e41336b5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+                alt=""
+                style={style}
                 className="boxShadow"
               />
             </Box>
           </Box>
-
         </Grid>
       </Grid>
     </>
